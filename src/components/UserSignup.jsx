@@ -29,7 +29,7 @@ const UserSignUp = () => {
   };
 
   return (
-    <div bg-black>
+    <div >
       <h1>User SignUp</h1>
       <form id="myForm" onSubmit={handleSubmit}>
         <input
