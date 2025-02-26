@@ -18,6 +18,21 @@ export const sendOTP = createAsyncThunk(
   }
 );
 
+//signup with otp
+export const userSignupOTP = createAsyncThunk(
+  "auth/userSignupOTP",
+  async (mobileNumber, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/v1/otp/send-otp`,
+        { mobileNumber: mobileNumber}
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const verifyOTP = createAsyncThunk(
   "auth/verifyOTP",

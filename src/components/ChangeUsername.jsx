@@ -35,6 +35,9 @@ const changeUserNameHandler = () => {
     })
    
   };
+  useEffect(()=>{
+    dispatch(getProfile(userId))
+  },[])
   
 
   return (

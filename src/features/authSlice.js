@@ -1,7 +1,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-import { sendOTP, verifyOTP, loginWithPassword, getProfile } from "./authThunk";
+import { sendOTP, verifyOTP, loginWithPassword, getProfile,userSignupOTP } from "./authThunk";
 
 
 const authSlice = createSlice({
@@ -33,6 +33,19 @@ const authSlice = createSlice({
         state.isOTPSent = true;
       })
       .addCase(sendOTP.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      }) 
+      //user signup otp
+       .addCase(userSignupOTP.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(userSignupOTP.fulfilled, (state) => {
+        state.loading = false;
+        state.isOTPSent = true;
+      })
+      .addCase(userSignupOTP.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       }) 

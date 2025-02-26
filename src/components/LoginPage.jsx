@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { sendOTP, verifyOTP, loginWithPassword } from "../features/authThunk";
+import { sendOTP, verifyOTP, loginWithPassword, getProfile } from "../features/authThunk";
 
 import { RiRefreshFill } from "react-icons/ri";
 import { ToastContainer, toast } from 'react-toastify';
@@ -19,7 +19,8 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isOTPSent, loading, error } = useSelector((state) => state.auth);
-
+    const {id} = useSelector((state) => state.auth.profile.data.userDetails);
+    const userId=id;
     const generateCaptcha = () => {
         const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
         let captchaText = "";
@@ -47,6 +48,7 @@ const LoginPage = () => {
         dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
                 toast("User login Successfully !!!!!")
+                
                 navigate("/");
             }
             else if(res.meta.requestStatus === "rejected"){
