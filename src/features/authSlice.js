@@ -1,22 +1,20 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-import { sendOTP, verifyOTP,loginWithPassword} from "./authThunk";
-
-
-
+import { sendOTP, verifyOTP, loginWithPassword, getProfile } from "./authThunk";
 
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    profile: JSON.parse(localStorage.getItem("profile"))||null,
+    profile: JSON.parse(localStorage.getItem("profile")) || {},
+    userData: JSON.parse(localStorage.getItem("userData")) || {},
     isOTPSent: false,
-    isAuthenticated: !!sessionStorage.getItem("authToken"),
+    isAuthenticated: sessionStorage.getItem("authToken") || null,
     loading: false,
     error: null,
-    id:null
-   
+
+
   },
   reducers: {
     logout: (state) => {
@@ -25,7 +23,7 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
+    builder  //send otp
       .addCase(sendOTP.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -37,32 +35,49 @@ const authSlice = createSlice({
       .addCase(sendOTP.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      })
+      }) 
+      //verify Otp
       .addCase(verifyOTP.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(verifyOTP.fulfilled, (state,action) => {
+      .addCase(verifyOTP.fulfilled, (state, action) => {
         state.loading = false;
-        
-        
+        state.profile = action.payload
+
         state.isAuthenticated = true;
       })
       .addCase(verifyOTP.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(loginWithPassword.pending,(state)=>{
-        state.loading=true;
-        state.error=null;
-      }).addCase(loginWithPassword.fulfilled,(state,action)=>{
-        state.loading=false;
-        state.isAuthenticated=true
-      }).addCase(loginWithPassword.rejected),(state,action)=>{
-        state.loading=false;
-        state.error=payload
-      }
-    
+      //login with password
+      .addCase(loginWithPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+
+      }).addCase(loginWithPassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isAuthenticated = true
+        state.profile = action.payload
+      }).addCase(loginWithPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload
+      })
+      //get Profile
+      .addCase(getProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      }).addCase(getProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isAuthenticated = true
+        state.profile = action.payload
+
+      }).addCase(getProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload
+      })
+
   },
 });
 

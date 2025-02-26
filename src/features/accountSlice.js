@@ -1,21 +1,11 @@
-
 import { createSlice } from "@reduxjs/toolkit";
 import { changeUserName } from "./accountThunk";
-
-
-
-
-
 
 const accountSlice = createSlice({
   name: "account",
   initialState: {
-   
-   
     loading: false,
     error: null,
-    
-   
   },
   reducers: {
     logout: (state) => {
@@ -29,16 +19,20 @@ const accountSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(changeUserName.fulfilled, (state) => {
-        state.loading = false;
-       
+      .addCase(changeUserName.fulfilled, (state, action) => {
+
+        state.loading = false
+        state.userData = action.payload.data
+
+        state.error = null
+
       })
       .addCase(changeUserName.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      
-    
+
+
   },
 });
 
