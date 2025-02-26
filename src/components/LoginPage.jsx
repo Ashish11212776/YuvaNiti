@@ -35,16 +35,23 @@ const LoginPage = () => {
 
     const handleSendOTP = () => {
         if (mobileNumber.length === 10 && captcha === generatedCaptcha) {
-            dispatch(sendOTP(mobileNumber));
+            dispatch(sendOTP(mobileNumber)).then((res)=>{
+                toast("Otp Sent !!!!!!!")
+            });
         } else {
-            alert("Please enter a valid 10-digit mobile number and correct captcha");
+            toast("Invalid crediantiels");
         }
     };
 
     const handleVerifyOTP = () => {
         dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
+                toast("User login Successfully !!!!!")
                 navigate("/");
+            }
+            else if(res.meta.requestStatus === "rejected"){
+                toast(res.message)
+
             }
         });
     };
@@ -53,10 +60,11 @@ const LoginPage = () => {
         if (captcha === generatedCaptcha) {
             dispatch(loginWithPassword({ mobileNumber, password })).then((res) => {
                 if (res.meta.requestStatus === "fulfilled") {
+                    toast("Login Successfully done !!!!")
                     navigate("/");
                 }
                 else if (res.meta.requestStatus === "rejected") {
-                    toast("error")
+                    toast(res.message)
                     console.log(res);
                     
                 }
@@ -115,7 +123,7 @@ const LoginPage = () => {
                                             : "bg-blue-600 hover:bg-blue-700 transform hover:scale-105"
                                         }`}
                                 >
-                                    {loading ? "Sending OTP..." : "Login with Mobile"}
+                                    {loading ? "Sending OTP..." : "Get OTP"}
                                 </button>
                                 <button
                                     onClick={() => setIsLoginWithPassword(true)}
