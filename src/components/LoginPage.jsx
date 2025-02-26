@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { sendOTP, verifyOTP, loginWithPassword } from "../features/authThunk";
+
+import { RiRefreshFill } from "react-icons/ri";
+import { ToastContainer, toast } from 'react-toastify';
+import OtpLayout from "./OtpLayout";
 import OtpInput from "react-otp-input";
 
 const LoginPage = () => {
@@ -17,7 +21,7 @@ const LoginPage = () => {
     const { isOTPSent, loading, error } = useSelector((state) => state.auth);
 
     const generateCaptcha = () => {
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
         let captchaText = "";
         for (let i = 0; i < 6; i++) {
             captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -51,6 +55,12 @@ const LoginPage = () => {
                 if (res.meta.requestStatus === "fulfilled") {
                     navigate("/");
                 }
+                else if (res.meta.requestStatus === "rejected") {
+                    toast("error")
+                    console.log(res);
+                    
+                }
+
             });
         } else {
             alert("Captcha is incorrect");
@@ -60,7 +70,7 @@ const LoginPage = () => {
     const isFormValid = mobileNumber.length === 10 && captcha.length >= 6;
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-400 to-purple-600 p-4">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md transform transition-all duration-500 hover:scale-105">
                 <h2 className="text-3xl font-bold text-gray-800 text-center mb-2">Welcome Back</h2>
                 <p className="text-gray-500 text-center mb-8 text-sm">Plan your future with ease</p>
@@ -87,9 +97,13 @@ const LoginPage = () => {
                                         value={captcha}
                                         onChange={(e) => setCaptcha(e.target.value)}
                                     />
-                                    <div className="bg-purple-600 text-white font-bold rounded-md p-4 text-center text-lg tracking-widest h-[52px] w-full sm:w-[35%] shadow-md flex items-center justify-center">
-                                        {generatedCaptcha}
+                                    <div
+                                        onClick={generateCaptcha}
+                                        className="bg-purple-600 text-white font-bold rounded-md p-4 text-center text-lg tracking-widest h-[52px] w-full sm:w-[35%] shadow-md flex items-center justify-center cursor-pointer hover:bg-purple-700 transition duration-300"
+                                    >
+                                        {generatedCaptcha} <RiRefreshFill />
                                     </div>
+
                                 </div>
 
                                 <button
@@ -113,30 +127,11 @@ const LoginPage = () => {
                             </>
                         ) : (
                             <>
-                                <OtpInput
-                                    value={otpEntered}
-                                    onChange={setOTP}
-                                    numInputs={4}
-                                    renderSeparator={<span className="mx-2"> </span>}
-                                    inputStyle={{
-                                        width: "3rem",
-                                        height: "3rem",
-                                        margin: "0.5rem",
-                                        borderRadius: "0.5rem",
-                                        border: "1px solid #ccc",
-                                        textAlign: "center",
-                                    }}
-                                    isInputNum
-                                />
-                                <button
-                                    onClick={handleVerifyOTP}
-                                    disabled={loading}
-                                    className={`w-full py-4 rounded-lg text-white font-semibold transition-all duration-300 shadow-md 
-                                        ${loading ? "bg-green-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700 transform hover:scale-105"}`}
-                                >
-                                    {loading ? "Verifying OTP..." : "Verify OTP"}
-                                </button>
+                                <OtpLayout setOTP={setOTP} otpEntered={otpEntered} handleVerifyOTP={handleVerifyOTP} loading={loading}/>
                             </>
+
+
+
                         )}
                     </>
                 ) : (
@@ -175,6 +170,7 @@ const LoginPage = () => {
                     </p>
                 )}
             </div>
+            <ToastContainer />
         </div>
     );
 };
