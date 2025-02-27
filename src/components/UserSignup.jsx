@@ -6,16 +6,19 @@ import { userSignupOTP } from "../features/authThunk";
 import OtpLayout from "./OtpLayout";
 import { verifyOTP } from "../features/authThunk";
 import { useNavigate } from "react-router-dom";
+import { MdCheck } from "react-icons/md";
+import { RiRefreshFill } from "react-icons/ri";
+import login from "../../public/login.png"
 
 const UserSignUp = () => {
   const [user_number, setUserNumber] = useState("");
   const [user_captcha, setUserCaptcha] = useState("");
   const [captchaValue, setCaptchaValue] = useState("");
   const [otpEntered, setOTP] = useState("");
-  const [errors, setErrors] = useState({}); // Store error messages
   const dispatch = useDispatch();
   const [isOtpSend, setisOtpSend] = useState(false);
   const navigate = useNavigate();
+  const [Errors,setErrors]=useState("")
 
   const { loading } = useSelector((state) => state.auth);
 
@@ -49,183 +52,118 @@ const UserSignUp = () => {
     return Object.keys(newErrors).length === 0;
   };
   const mobileNumber = user_number;
-  const handleSubmit = async (e) => {
+  const handleSendOTP = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
       toast.error("Please enter valid data.");
       return;
     }
-      dispatch(userSignupOTP(mobileNumber)).then(() => {
+    dispatch(userSignupOTP(mobileNumber))
+      .then(() => {
         toast.success("OTP sent successfully!");
         setisOtpSend(true);
         setCaptchaValue(generateCaptcha());
         setUserCaptcha("");
       })
-     .catch((error)=>{
+      .catch((error) => {
         console.error("Error:", error);
-      toast.error("Error sending OTP!");
-     });
-      
-   
+        toast.error("Error sending OTP!");
+      });
   };
 
-   const handleVerifyOTP = () => {
+  const handleVerifyOTP = () => {
     dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         toast("User login Successfully !!!!!");
         setisOtpSend(false);
-        navigate("/");
+        navigate("/account");
       } else if (res.meta.requestStatus === "rejected") {
         toast(res.message);
       }
     });
   };
 
-  return (
-    <>
-      {!isOtpSend ? (
-        <div className="min-h-screen bg-gradient-to-tr from-blue-50 via-white to-purple-50 py-8 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-md mx-auto">
-            {/* Logo/Brand Section */}
-            <div className="text-center mb-8">
-              <div className="h-16 w-16 bg-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <span className="text-2xl text-white">📚</span>
-              </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Create Account
-              </h1>
-              <p className="text-gray-600">
-                Take the Lead Today, Shape a Brighter Tomorrow—One Step Ahead
-                for a Future Full of Possibilities.
-              </p>
-            </div>
+   return (
+    <div className="flex flex-col md:flex-row m-6 p-4 w-full md:w-[90%] lg:w-[80%] min-h-screen font-roboto mx-auto  bg-white">
+      {/* Left Section */}
+      <div className="hidden md:flex flex-col justify-center items-start w-1/2 gap-6 p-8 rounded-lg h-1/2 shadow-slate-300 bg-gray-100">
+        <h2 className="font-bold text-3xl mb-4 text-gray-800">New to Yuva Niti?</h2>
 
-            {/* Main Card */}
-            <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 backdrop-blur-sm bg-opacity-90">
-              <form id="myForm" onSubmit={handleSubmit} className="space-y-6">
-                {/* Phone Number Input */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Mobile Number
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="usernumber"
-                      placeholder="Enter Mobile Number"
-                      value={user_number}
-                      onChange={handleChange}
-                      aria-label="Mobile Number"
-                      required
-                      className="w-full h-[52px] pl-12 pr-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 transition-all duration-200 text-gray-900 placeholder:text-gray-400"
-                    />
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                      📞
-                    </span>
-                  </div>
-                  {errors?.user_number && (
-                    <p className="text-red-500 text-sm mt-1 flex items-center">
-                      <span className="mr-1">⚠️</span>
-                      {errors.user_number}
-                    </p>
-                  )}
-                </div>
-
-                {/* Captcha Section */}
-                <div className="space-y-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    CAPTCHA Verification
-                  </label>
-                  <div className="p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl space-y-4">
-                    {/* CAPTCHA Display */}
-                    <div className="flex justify-between items-center bg-white rounded-lg border border-gray-200 overflow-hidden">
-                      <div className="captcha-display relative flex-1">
-                        <div className="px-4 py-3 bg-[repeating-linear-gradient(45deg,#eee,#eee_1px,#fff_2px,#fff_3px)] select-none">
-                          <div className="flex justify-center items-center h-10">
-                            {captchaValue.split("").map((char, index) => (
-                              <span
-                                key={index}
-                                className="inline-block mx-0.5 font-mono text-2xl"
-                                style={{
-                                  transform: `rotate(${
-                                    Math.random() * 20 - 10
-                                  }deg) translateY(${Math.random() * 6 - 3}px)`,
-                                  color: `hsl(${
-                                    Math.random() * 360
-                                  }, 70%, 40%)`,
-                                  textShadow: "1px 1px 0 rgba(0,0,0,0.1)",
-                                }}
-                              >
-                                {char}
-                              </span>
-                            ))}
-                          </div>
-                          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_85%,rgba(0,0,0,0.05))]"></div>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setCaptchaValue(generateCaptcha())}
-                        className="h-full px-4 border-l border-gray-200 hover:bg-gray-50 transition-colors duration-200"
-                        aria-label="Refresh CAPTCHA"
-                      >
-                        🔄
-                      </button>
-                    </div>
-
-                    {/* CAPTCHA Input */}
-                    <input
-                      type="text"
-                      name="captcha"
-                      placeholder="Enter the code shown above"
-                      value={user_captcha}
-                      onChange={handleChange}
-                      required
-                      className="w-full h-[52px] px-4 rounded-xl border italic border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white transition-all duration-200"
-                    />
-
-                    {errors?.user_captcha && (
-                      <p className="text-red-500 text-sm flex items-center">
-                        <span className="mr-1">⚠️</span>
-                        {errors.user_captcha}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="w-full h-[52px] bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-all duration-200 transform hover:translate-y-[-1px] active:translate-y-0 active:scale-[0.99] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Create Account
-                </button>
-              </form>
-            </div>
-
-            {/* Footer Text */}
-            <p className="mt-6 text-center text-sm text-gray-600">
-              Already have an account?{" "}
-              <a
-                href="/login"
-                className="font-medium text-blue-600 hover:text-blue-500"
-              >
-                Sign in
-              </a>
-            </p>
-          </div>
-          <ToastContainer />
+        <div className="space-y-4 w-full">
+          <p className="flex items-center gap-3 text-gray-700">
+            <MdCheck className="h-5 w-5 text-blue-400 flex-shrink-0" /> Apply Govt form in simple click
+          </p>
+          <p className="flex items-center gap-3 text-gray-700">
+            <MdCheck className="h-5 w-5 text-blue-400 flex-shrink-0" /> Get Notifications
+          </p>
+          <p className="flex items-center gap-3 text-gray-700">
+            <MdCheck className="h-5 w-5 text-blue-400 flex-shrink-0" /> Read Govt Schemes
+          </p>
         </div>
-      ) : (
-        <OtpLayout
-          setOTP={setOTP}
-          otpEntered={otpEntered}
-          handleVerifyOTP={handleVerifyOTP}
-          loading={loading}
-        />
-      )}
-    </>
+
+        <button className="w-full text-blue-600 border-2 border-blue-600 py-3 rounded-md hover:bg-blue-50 transition-all duration-300 font-medium"
+        onClick={() => navigate("/login")} 
+        >
+          Already have Account
+        </button>
+
+        <div className="mt-6 w-full flex justify-center">
+          <img src={login} alt="Login illustration" className="object-contain max-w-[360px] w-full" />
+        </div>
+      </div>
+
+      {/* Right Section */}
+      <div className="flex flex-col justify-top mt-52 w-full md:w-1/2 bg-white shadow-slate-300 h-1/2 p-8 rounded-lg shadow-sm">
+       <h1 className="mb-10 text-left text-3xl text-gray-900">Register User</h1>
+        {!isOtpSend ? (
+          <>
+            <label className="text-xl font-medium mb-1 text-left block text-gray-300">Mobile Number</label>
+            <input
+              type="text"
+              placeholder="Enter Mobile Number"
+              className="border border-gray-300 p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50 text-sm h-[52px] w-full rounded-md shadow-sm"
+              value={user_number}
+              name="usernumber"
+              onChange={handleChange}
+              maxLength={10}
+              aria-label="Mobile Number"
+            />
+            <p className="text-[11px] text-gray-500 -mt-2 mb-4">You will receive an OTP on this number</p>
+
+            <div className="mb-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <input
+                type="text"
+                placeholder="Enter Captcha"
+                className="border border-gray-300 p-4 focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50 text-sm h-[52px] w-full sm:w-[50%] rounded-md shadow-sm"
+                value={user_captcha}
+                name="captcha"
+                onChange={handleChange}
+              />
+              <div
+                onClick={() => setCaptchaValue(generateCaptcha())}
+                className="bg-blue-400 text-white font-bold rounded-md text-center tracking-widest h-[52px] w-full sm:w-[45%] shadow-sm flex items-center justify-center cursor-pointer hover:bg-blue-500 transition duration-300 gap-2"
+              >
+                <span className="text-sm">{captchaValue}</span>
+                <RiRefreshFill className="w-5 h-5" />
+              </div>
+            </div>
+
+            <button
+              onClick={handleSendOTP}
+              disabled={!validateForm || loading}
+              className={`w-full py-4 rounded-md text-white font-semibold transition-all duration-300 shadow-sm
+                ${!validateForm || loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}`}
+            >
+              {loading ? "Sending OTP..." : "Get OTP"}
+            </button>
+          </>
+        ) : (
+          <OtpLayout setOTP={setOTP} otpEntered={otpEntered} handleVerifyOTP={handleVerifyOTP} loading={loading} />
+        )}
+      </div>
+       <ToastContainer />
+    </div>
   );
 };
 

@@ -4,36 +4,49 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeUserName } from '../features/accountThunk';
 import { useNavigate } from 'react-router-dom';
 import { getProfile } from '../features/authThunk';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 
 
 const ChangeUsername = () => {
-    const {id} = useSelector((state) => state.auth.profile.data.userDetails);
-    const username= useSelector((state)=>state.auth.userData.username)
-   
-    
+  const { id } = useSelector((state) => state.auth.profile.data.userDetails);
+  const username = useSelector((state) => state.auth.userData.username)
 
-    
-    
 
- const userId=id
+
+
+
+
+  const userId = id
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const [userName, setUserName] = useState(username);
   const [change, setChange] = useState(false);
-  
+ 
 
-const changeUserNameHandler = () => {
-    dispatch(changeUserName({ userName, userId })).then(()=>{
-        dispatch(getProfile({userId})).then((res)=>{
-            
-            navigate("/")
+
+  const changeUserNameHandler = () => {
+    dispatch(changeUserName({ userName, userId })).then((res) => {
+
+ 
+      if (res.meta.requestStatus ==="fulfilled") {
+       
+      
+       
+        dispatch(getProfile({ userId }));
+        toast("User Name Changed Successfully")
+        navigate("/")
+        setChange(!change)
         
-        })
-    })
-   
+        
+     
+       
+      }
+    }).catch((error) => {
+      // Handle error if needed
+      toast.error("Failed to change username.");
+    });
   };
   useEffect(()=>{
     dispatch(getProfile(userId))
@@ -41,13 +54,13 @@ const changeUserNameHandler = () => {
   
 
   return (
-    <div className="p-6 max-w-lg mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Account Settings</h2>
+    <div className="p-6 max-w-lg mx-auto flex flex-col item-start ">
+      <h2 className="text-2xl font-bold mb-6 text-white flex items-start">Account Settings</h2>
       {!change ? (
         <div>
           <div className="mb-6">
-            <label className="block text-gray-600 text-sm font-semibold mb-2">
-              Username
+            <label className=" text-white text-sm font-semibold mb-2 flex">
+              Username *
             </label>
             <input
               type='text'
@@ -59,9 +72,9 @@ const changeUserNameHandler = () => {
             />
             <button
               onClick={() => setChange(!change)}
-              className="mt-4 w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+              className="mt-4 w-full px-4 py-2 bg-white text-blue-700 rounded-lg border border-green-400 hover:bg-blue-300  hover:text-white  transition duration-300"
             >
-              Change
+              Change UserName
             </button>
           </div>
         </div>
@@ -83,15 +96,18 @@ const changeUserNameHandler = () => {
               Cancel
             </button>
             <button
-              onClick={()=>changeUserNameHandler()}
+              onClick={() => changeUserNameHandler()}
               className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300"
             >
               Confirm
             </button>
           </div>
         </div>
-      )}
+      )}<ToastContainer />
+      
     </div>
+    
+    
   );
 };
 

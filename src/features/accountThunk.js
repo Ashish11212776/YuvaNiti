@@ -6,6 +6,8 @@ export const changeUserName = createAsyncThunk(
   async ({ userName, userId }, { getState, rejectWithValue }) => {
     try {
       const token = getState().auth.isAuthenticated;
+      console.log(token);
+      
 
 
       const response = await axios.post(
