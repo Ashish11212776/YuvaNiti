@@ -46,17 +46,17 @@ export const loginWithPassword = createAsyncThunk("auth/loginwithpasword",
       const response = await axios.post(`${BASE_URL}/api/v1/account/login-with-password`, {
         mobileNumber, password, role: 5
       })
-      console.log(1);
+    
       
       const { data } = response
-      console.log(1);
+     ;
       const { token } = response.data;
-      console.log(1);
+   
 
       sessionStorage.setItem("authToken", token);
-      console.log(1);
+      
       localStorage.setItem("profile", JSON.stringify(data))
-      console.log(1);
+      
       return token;
 
     } catch (error) {

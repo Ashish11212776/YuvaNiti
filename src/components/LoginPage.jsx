@@ -6,7 +6,10 @@ import { sendOTP, verifyOTP, loginWithPassword } from "../features/authThunk";
 import { RiRefreshFill } from "react-icons/ri";
 import { ToastContainer, toast } from 'react-toastify';
 import OtpLayout from "./OtpLayout";
-import OtpInput from "react-otp-input";
+import { MdCheck } from "react-icons/md";
+import login from "../../public/login.png"
+
+
 
 const LoginPage = () => {
     const [mobileNumber, setMobileNumber] = useState("");
@@ -35,7 +38,7 @@ const LoginPage = () => {
 
     const handleSendOTP = () => {
         if (mobileNumber.length === 10 && captcha === generatedCaptcha) {
-            dispatch(sendOTP(mobileNumber)).then((res)=>{
+            dispatch(sendOTP(mobileNumber)).then((res) => {
                 toast("Otp Sent !!!!!!!")
             });
         } else {
@@ -49,7 +52,7 @@ const LoginPage = () => {
                 toast("User login Successfully !!!!!")
                 navigate("/");
             }
-            else if(res.meta.requestStatus === "rejected"){
+            else if (res.meta.requestStatus === "rejected") {
                 toast(res.message)
 
             }
@@ -66,7 +69,7 @@ const LoginPage = () => {
                 else if (res.meta.requestStatus === "rejected") {
                     toast(res.message)
                     console.log(res);
-                    
+
                 }
 
             });
@@ -75,79 +78,109 @@ const LoginPage = () => {
         }
     };
 
-    const isFormValid = mobileNumber.length === 10 && captcha.length >= 6;
+    const isFormValid = mobileNumber.length === 10 && captcha.length >= 6 && captcha === generatedCaptcha;
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md transform transition-all duration-500 hover:scale-105">
+        <div className="flex flex-col md:flex-row m-6 p-4 w-full md:w-[90%] lg:w-[80%] min-h-screen font-roboto mx-auto gap-6 bg-white">
+            {/* Left Section */}
+            <div className="hidden md:flex flex-col justify-center items-start w-1/2 gap-6 p-8 rounded-lg h-auto ">
+                <h2 className="font-bold text-3xl mb-4">New to Yuva Niti?</h2>
+
+                <div className="space-y-4 w-full">
+                    <p className="flex items-center gap-3">
+                        <MdCheck className="h-5 w-5 text-blue-400 flex-shrink-0" />
+                        <span className="text-gray-700">Apply Govt form in simple click</span>
+                    </p>
+                    <p className="flex items-center gap-3">
+                        <MdCheck className="h-5 w-5 text-blue-400 flex-shrink-0" />
+                        <span className="text-gray-700">Get Notifications</span>
+                    </p>
+                    <p className="flex items-center gap-3">
+                        <MdCheck className="h-5 w-5 text-blue-400 flex-shrink-0" />
+                        <span className="text-gray-700">Read Govt Schemes</span>
+                    </p>
+                </div>
+
+                <button className="w-1/2 text-blue-400 border-2 border-blue-400 flex items-center justify-center py-3 rounded-md hover:bg-blue-50 transition-all duration-300 font-medium">
+                    Register
+                </button>
+
+                <div className="mt-6 w-full flex justify-center">
+                    <img src={login} alt="Login illustration" className="object-contain max-w-[360px] w-full" />
+                </div>
+            </div>
+
+            {/* Right Section */}
+            <div className="w-full md:w-1/2 flex flex-col  items-start bg-white  rounded-lg p-6">
                 <h2 className="text-3xl font-bold text-gray-800 text-center mb-2">Welcome Back</h2>
-                <p className="text-gray-500 text-center mb-8 text-sm">Plan your future with ease</p>
+                <p className="text-gray-500 text-center mb-6 text-sm">Plan your future with ease</p>
 
                 {!isLoginWithPassword ? (
                     <>
                         {!isOTPSent ? (
                             <>
+                                <label className="text-sm font-medium mb-1 block text-gray-700">Mobile Number</label>
                                 <input
                                     type="text"
                                     placeholder="Enter Mobile Number"
-                                    className="border border-gray-300 p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-gray-100 text-sm h-[52px] w-full rounded-md shadow-sm"
+                                    className="border border-gray-300 p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50 text-sm h-[52px] w-full rounded-md shadow-sm"
                                     value={mobileNumber}
                                     onChange={(e) => setMobileNumber(e.target.value)}
                                     maxLength={10}
                                     aria-label="Mobile Number"
                                 />
+                                <p className="text-[11px] text-gray-500 -mt-2 mb-4">You will receive an OTP on this number</p>
 
-                                <div className="mb-4 flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+                                <div className="mb-5 flex flex-col sm:flex-row items-center justify-between gap-4">
                                     <input
                                         type="text"
                                         placeholder="Enter Captcha"
-                                        className="border border-gray-300 p-4 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-gray-100 text-sm h-[52px] w-full sm:w-[60%] rounded-md shadow-sm"
+                                        className="border border-gray-300 p-4 focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50 text-sm h-[52px] w-full sm:w-[50%] rounded-md shadow-sm"
                                         value={captcha}
                                         onChange={(e) => setCaptcha(e.target.value)}
                                     />
                                     <div
                                         onClick={generateCaptcha}
-                                        className="bg-purple-600 text-white font-bold rounded-md p-4 text-center text-lg tracking-widest h-[52px] w-full sm:w-[35%] shadow-md flex items-center justify-center cursor-pointer hover:bg-purple-700 transition duration-300"
+                                        className="bg-blue-400 text-white font-bold rounded-md text-center tracking-widest h-[52px] w-full sm:w-[45%] shadow-sm flex items-center justify-center cursor-pointer hover:bg-blue-500 transition duration-300 gap-2"
                                     >
-                                        {generatedCaptcha} <RiRefreshFill />
+                                        <span className="text-sm">{generatedCaptcha}</span>
+                                        <RiRefreshFill className="w-5 h-5" />
                                     </div>
-
                                 </div>
 
                                 <button
                                     onClick={handleSendOTP}
                                     disabled={!isFormValid || loading}
-                                    className={`w-full py-4 rounded-lg text-white font-semibold transition-all duration-300 shadow-md
-                                        ${!isFormValid || loading
+                                    className={`w-full py-4 rounded-md text-white font-semibold transition-all duration-300 shadow-sm
+                            ${!isFormValid || loading
                                             ? "bg-blue-300 cursor-not-allowed"
-                                            : "bg-blue-600 hover:bg-blue-700 transform hover:scale-105"
+                                            : "bg-blue-600 hover:bg-blue-700"
                                         }`}
                                 >
                                     {loading ? "Sending OTP..." : "Get OTP"}
                                 </button>
-                                <button
-                                    onClick={() => setIsLoginWithPassword(true)}
-                                    disabled={!isFormValid}
-                                    className={`mt-4 text-purple-600 hover:text-purple-800 transition duration-300 text-sm ${!isFormValid ? "cursor-not-allowed opacity-50" : ""}`}
-                                >
-                                    Login with password instead
-                                </button>
+
+                                <div className="flex justify-center mt-5">
+                                    <button
+                                        onClick={() => setIsLoginWithPassword(true)}
+                                        disabled={!isFormValid}
+                                        className={`text-blue-600 transition duration-300 text-sm hover:underline ${!isFormValid ? "cursor-not-allowed opacity-50" : ""}`}
+                                    >
+                                        Login with password instead
+                                    </button>
+                                </div>
                             </>
                         ) : (
-                            <>
-                                <OtpLayout setOTP={setOTP} otpEntered={otpEntered} handleVerifyOTP={handleVerifyOTP} loading={loading}/>
-                            </>
-
-
-
+                            <OtpLayout setOTP={setOTP} otpEntered={otpEntered} handleVerifyOTP={handleVerifyOTP} loading={loading} />
                         )}
                     </>
                 ) : (
                     <>
+                        <label className="text-sm font-medium mb-1 block text-gray-700">Password</label>
                         <input
                             type="password"
                             placeholder="Enter Your Password"
-                            className="w-full border border-gray-300 p-4 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 shadow-sm"
+                            className="w-full border border-gray-300 p-4 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 shadow-sm"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             aria-label="Password"
@@ -155,31 +188,35 @@ const LoginPage = () => {
                         <button
                             onClick={handleLoginWithPassword}
                             disabled={!isFormValid || loading}
-                            className={`w-full py-4 rounded-lg text-white font-semibold transition-all duration-300 shadow-md 
-                                ${!isFormValid || loading
+                            className={`w-full py-4 rounded-md text-white font-semibold transition-all duration-300 shadow-sm 
+                    ${!isFormValid || loading
                                     ? "bg-purple-400 cursor-not-allowed"
-                                    : "bg-purple-600 hover:bg-purple-700 transform hover:scale-105"
+                                    : "bg-blue-600 hover:bg-blue-700"
                                 }`}
                         >
                             {loading ? "Verifying..." : "Login"}
                         </button>
-                        <button
-                            onClick={() => setIsLoginWithPassword(false)}
-                            className="mt-4 text-blue-600 hover:underline text-sm transition duration-300"
-                        >
-                            Login with OTP instead
-                        </button>
+
+                        <div className="flex justify-center mt-5">
+                            <button
+                                onClick={() => setIsLoginWithPassword(false)}
+                                className="text-blue-600 hover:underline text-sm transition duration-300"
+                            >
+                                Login with OTP instead
+                            </button>
+                        </div>
                     </>
                 )}
 
                 {error && (
-                    <p className="text-red-600 font-semibold mt-4 text-center">
+                    <div className="text-red-600 font-medium mt-4 text-center p-3 bg-red-50 rounded-md">
                         Error: {error.message || "Something went wrong!"}
-                    </p>
+                    </div>
                 )}
             </div>
             <ToastContainer />
         </div>
+
     );
 };
 

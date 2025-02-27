@@ -3,19 +3,21 @@ import { Eye, EyeOff, Check, X } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changePassword } from '../features/accountThunk';
 import { useNavigate } from 'react-router-dom';
-
+import { ToastContainer, toast } from 'react-toastify';
 const ChangePassword = () => {
-    const {id} = useSelector((state) => state.auth.profile.data.userDetails);
-    const navigate = useNavigate()
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordsMatch, setPasswordsMatch] = useState(true); 
-  const dispatch = useDispatch()
-  const userId=id;
+  const { id } = useSelector((state) => state.auth.profile.data.userDetails);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   
-  // Password validation states
+  const [formData, setFormData] = useState({
+    password: '',
+    confirmPassword: ''
+  });
+  const [visibility, setVisibility] = useState({
+    password: false,
+    confirmPassword: false
+  });
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [validations, setValidations] = useState({
     length: false,
     uppercase: false,
@@ -23,8 +25,11 @@ const ChangePassword = () => {
     number: false,
     special: false
   });
+ const [change,setChange] =useState(false)
+  const { password, confirmPassword } = formData;
 
   useEffect(() => {
+    // Validate password
     setValidations({
       length: password.length >= 8,
       uppercase: /[A-Z]/.test(password),
@@ -33,53 +38,85 @@ const ChangePassword = () => {
       special: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)
     });
     
-    if (confirmPassword) {
-      setPasswordsMatch(password === confirmPassword);
-    }
+    // Check if passwords match
+    setPasswordsMatch(confirmPassword ? password === confirmPassword : true);
   }, [password, confirmPassword]);
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
- 
-  const changePasswordHandler =()=>{
-    dispatch(changePassword({ password, confirmPassword, userId }))
-    .then((res) => {
-      navigate("/");
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
     });
+  };
 
-  }
+  const toggleVisibility = (field) => {
+    setVisibility({
+      ...visibility,
+      [field]: !visibility[field]
+    });
+  };
 
-  
+  const handleSubmit = () => {
+    dispatch(changePassword({ password, confirmPassword, userId: id })).then((res)=>{
+      if (res.meta.requestStatus=="fulfilled"){
+        toast("password change")
+        navigate("/account")
+        setChange(!change)
 
-  const isPasswordValid = Object.values(validations).every(value => value === true);
+      }
+    })
+      
+  };
+
+  const isPasswordValid = Object.values(validations).every(value => value);
+  const isFormValid = password && confirmPassword && passwordsMatch && isPasswordValid;
+
+  const ValidationItem = ({ isValid, text }) => (
+    <div className="flex items-center">
+      {isValid ? 
+        <Check size={16} className="text-green-500 mr-2 flex-shrink-0" /> : 
+        <X size={16} className="text-red-500 mr-2 flex-shrink-0" />}
+      <span>{text}</span>
+    </div>
+  );
 
   return (
+    <div className='p-6 max-w-lg mx-auto flex flex-col item-start '>
+      {!change?
+    (<div className=' '>
+          <div className="mb-6">
+            <label className=" text-white text-sm font-semibold mb-2 flex">
+              Username *
+            </label>
+            <input
+              type='text'
+              name='password'
+             placeholder='************'
+              className="border rounded-lg px-4 py-2 w-full  bg-gray-100 text-black cursor-not-allowed"
+              readOnly
+            />
+            <button
+              onClick={() => setChange(!change)}
+              className="mt-4 w-full px-4 py-2 bg-white text-blue-700 rounded-lg border border-green-400 hover:bg-blue-300  hover:text-white  transition duration-300"
+            >
+              Change Password
+            </button>
+          </div>
+        </div>):<>
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">Create Account</h2>
+      <h2 className="text-xl font-bold mb-4">Change Password</h2>
       
+      {/* Password Field */}
       <div className="mb-4">
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Password
         </label>
         <div className="relative">
           <input
-            id="password"
-            type={showPassword ? "text" : "password"}
+            type={visibility.password ? "text" : "password"}
+            name="password"
             value={password}
-            onChange={handlePasswordChange}
+            onChange={handleChange}
             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               password && !isPasswordValid ? "border-yellow-500" : ""
             }`}
@@ -88,61 +125,36 @@ const ChangePassword = () => {
           <button
             type="button"
             className="absolute inset-y-0 right-0 pr-3 flex items-center"
-            onClick={togglePasswordVisibility}
-            aria-label={showPassword ? "Hide password" : "Show password"}
+            onClick={() => toggleVisibility('password')}
           >
-            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            {visibility.password ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
         
-        {/* Password requirements */}
+        {/* Password Requirements */}
         <div className="mt-2">
           <p className="text-sm font-medium text-gray-700 mb-1">Password must have:</p>
           <div className="grid grid-cols-1 gap-1 text-sm">
-            <div className="flex items-center">
-              {validations.length ? 
-                <Check size={16} className="text-green-500 mr-2 flex-shrink-0" /> : 
-                <X size={16} className="text-red-500 mr-2 flex-shrink-0" />}
-              <span>At least 8 characters</span>
-            </div>
-            <div className="flex items-center">
-              {validations.uppercase ? 
-                <Check size={16} className="text-green-500 mr-2 flex-shrink-0" /> : 
-                <X size={16} className="text-red-500 mr-2 flex-shrink-0" />}
-              <span>At least one uppercase letter</span>
-            </div>
-            <div className="flex items-center">
-              {validations.lowercase ? 
-                <Check size={16} className="text-green-500 mr-2 flex-shrink-0" /> : 
-                <X size={16} className="text-red-500 mr-2 flex-shrink-0" />}
-              <span>At least one lowercase letter</span>
-            </div>
-            <div className="flex items-center">
-              {validations.number ? 
-                <Check size={16} className="text-green-500 mr-2 flex-shrink-0" /> : 
-                <X size={16} className="text-red-500 mr-2 flex-shrink-0" />}
-              <span>At least one number</span>
-            </div>
-            <div className="flex items-center">
-              {validations.special ? 
-                <Check size={16} className="text-green-500 mr-2 flex-shrink-0" /> : 
-                <X size={16} className="text-red-500 mr-2 flex-shrink-0" />}
-              <span>At least one special character</span>
-            </div>
+            <ValidationItem isValid={validations.length} text="At least 8 characters" />
+            <ValidationItem isValid={validations.uppercase} text="At least one uppercase letter" />
+            <ValidationItem isValid={validations.lowercase} text="At least one lowercase letter" />
+            <ValidationItem isValid={validations.number} text="At least one number" />
+            <ValidationItem isValid={validations.special} text="At least one special character" />
           </div>
         </div>
       </div>
       
+      {/* Confirm Password Field */}
       <div className="mb-4">
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Confirm Password
         </label>
         <div className="relative">
           <input
-            id="confirmPassword"
-            type={showConfirmPassword ? "text" : "password"}
+            type={visibility.confirmPassword ? "text" : "password"}
+            name="confirmPassword"
             value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
+            onChange={handleChange}
             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               confirmPassword && !passwordsMatch ? "border-red-500" : ""
             }`}
@@ -151,10 +163,9 @@ const ChangePassword = () => {
           <button
             type="button"
             className="absolute inset-y-0 right-0 pr-3 flex items-center"
-            onClick={toggleConfirmPasswordVisibility}
-            aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+            onClick={() => toggleVisibility('confirmPassword')}
           >
-            {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            {visibility.confirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
         {confirmPassword && !passwordsMatch && (
@@ -162,14 +173,18 @@ const ChangePassword = () => {
         )}
       </div>
       
+      {/* Submit Button */}
       <button
         type="button"
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-blue-300 disabled:cursor-not-allowed"
-        disabled={!password || !confirmPassword || !passwordsMatch || !isPasswordValid}
-        onClick={()=>changePasswordHandler()}
+        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none disabled:bg-blue-300 disabled:cursor-not-allowed"
+        disabled={!isFormValid}
+        onClick={handleSubmit}
       >
-        change pasasword
+        Change Password
       </button>
+      <button onClick={()=>{setChange(!change)}} className=' w-full rounded-md mt-3 border hover:text-white hover:bg-blue-600 border-blue-400 bg-white text-blue-300'>Cancel</button>
+    </div></>}
+    <ToastContainer/>
     </div>
   );
 };
