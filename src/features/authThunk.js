@@ -25,7 +25,7 @@ export const userSignupOTP = createAsyncThunk(
     try {
       const response = await axios.post(
         `${BASE_URL}/api/v1/otp/send-otp`,
-        { mobileNumber: mobileNumber}
+        { mobileNumber: mobileNumber }
       );
       return response.data;
     } catch (error) {
@@ -48,7 +48,7 @@ export const verifyOTP = createAsyncThunk(
 
       sessionStorage.setItem("authToken", token);
       localStorage.setItem("profile", JSON.stringify(data))
-      return token;
+      return data
 
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -61,18 +61,18 @@ export const loginWithPassword = createAsyncThunk("auth/loginwithpasword",
       const response = await axios.post(`${BASE_URL}/api/v1/account/login-with-password`, {
         mobileNumber, password, role: 5
       })
-    
-      
+
+
       const { data } = response
-     ;
+        ;
       const { token } = response.data;
-   
+
 
       sessionStorage.setItem("authToken", token);
-      
+
       localStorage.setItem("profile", JSON.stringify(data))
-      
-      return token;
+
+      return data;
 
     } catch (error) {
       return rejectWithValue(error.response.data)
@@ -85,13 +85,13 @@ export const getProfile = createAsyncThunk(
   "auth/getProfile",
   async ({ userId }, { getState, rejectWithValue }) => {
     try {
-      const token = getState().auth.isAuthenticated;
-      console.log(token);
+      const token = sessionStorage.getItem("authToken")
       
-      
+
+
       const response = await axios.get(
         `${BASE_URL}/api/v1/customer/get-customer-details/${userId}`,
-        { 
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           }
@@ -99,10 +99,10 @@ export const getProfile = createAsyncThunk(
       );
       const { data } = response.data;
       localStorage.setItem("userData", JSON.stringify(data));
-      
+
       return data;
     } catch (error) {
-      
+
       return rejectWithValue(
         error.response?.data || { message: 'An unknown error occurred' }
       );
