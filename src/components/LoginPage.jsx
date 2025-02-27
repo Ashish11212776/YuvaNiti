@@ -31,14 +31,14 @@ const LoginPage = () => {
     const handleSendOTP = () => {
         if (mobileNumber.length === 10 && captcha === generatedCaptcha) {
             dispatch(sendOTP(mobileNumber)).then((res) => {
-                
-                if(res.meta.requestStatus==="fulfilled"){
+
+                if (res.meta.requestStatus === "fulfilled") {
                     toast("Otp Sent !!!!!!!")
                 }
-                else if(res.meta.requestStatus === "rejected"){
+                else if (res.meta.requestStatus === "rejected") {
                     toast("Otp not sent")
                 }
-                
+
             });
         } else {
             toast("Invalid crediantiels");
@@ -49,10 +49,10 @@ const LoginPage = () => {
         dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
                 const userId = res.payload.data.userDetails.id
-                
-                
-                dispatch(getProfile({userId}))
-                
+
+
+                dispatch(getProfile({ userId }))
+
                 navigate("/");
                 toast("User login Successfully !!!!!")
             }
@@ -73,7 +73,7 @@ const LoginPage = () => {
                 }
                 else if (res.meta.requestStatus === "rejected") {
                     toast(res.message)
-                  
+
                 }
 
             });
@@ -106,7 +106,7 @@ const LoginPage = () => {
                 </div>
 
                 <button className="w-1/2 text-blue-400 border-2 border-blue-400 flex items-center justify-center py-3 rounded-md hover:bg-blue-50 transition-all duration-300 font-medium"
-                onClick={() => navigate("/signup")}
+                    onClick={() => navigate("/signup")}
                 >
                     Register
                 </button>
