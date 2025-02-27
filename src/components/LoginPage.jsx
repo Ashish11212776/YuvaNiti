@@ -23,7 +23,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const { isOTPSent, loading, error } = useSelector((state) => state.auth);
 
-    
+
     React.useEffect(() => {
         setGeneratedCaptcha(generateCaptcha());
     }, []);
@@ -31,7 +31,14 @@ const LoginPage = () => {
     const handleSendOTP = () => {
         if (mobileNumber.length === 10 && captcha === generatedCaptcha) {
             dispatch(sendOTP(mobileNumber)).then((res) => {
-                toast("Otp Sent !!!!!!!")
+                
+                if(res.meta.requestStatus==="fulfilled"){
+                    toast("Otp Sent !!!!!!!")
+                }
+                else if(res.meta.requestStatus === "rejected"){
+                    toast("Otp not sent")
+                }
+                
             });
         } else {
             toast("Invalid crediantiels");
@@ -41,15 +48,20 @@ const LoginPage = () => {
     const handleVerifyOTP = () => {
         dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
-                toast("User login Successfully !!!!!")
+                const userId = res.payload.data.userDetails.id
+                
+                
+                dispatch(getProfile({userId}))
                 
                 navigate("/");
+                toast("User login Successfully !!!!!")
             }
             else if (res.meta.requestStatus === "rejected") {
                 toast(res.message)
 
             }
         });
+
     };
 
     const handleLoginWithPassword = () => {
@@ -61,8 +73,7 @@ const LoginPage = () => {
                 }
                 else if (res.meta.requestStatus === "rejected") {
                     toast(res.message)
-                    console.log(res);
-
+                  
                 }
 
             });
@@ -133,7 +144,7 @@ const LoginPage = () => {
                                         onChange={(e) => setCaptcha(e.target.value)}
                                     />
                                     <div
-                                        onClick={()=>setGeneratedCaptcha(generateCaptcha())}
+                                        onClick={() => setGeneratedCaptcha(generateCaptcha())}
                                         className="bg-blue-400 text-white font-bold rounded-md text-center tracking-widest h-[52px] w-full sm:w-[45%] shadow-sm flex items-center justify-center cursor-pointer hover:bg-blue-500 transition duration-300 gap-2"
                                     >
                                         <span className="text-sm">{generatedCaptcha}</span>

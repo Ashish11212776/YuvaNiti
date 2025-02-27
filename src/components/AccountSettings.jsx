@@ -5,10 +5,10 @@ import { useSelector } from 'react-redux';
 import { FaRegUserCircle } from "react-icons/fa";
 
 const AccountSettings = () => {
-  const fullName= useSelector((state)=>state.auth.userData.fullName)
+  const fullName= useSelector((state)=>state.auth?.userData?.fullName)
 
 
-  return (<div className='bg-blue-500 font-roboto min-h-screen'>
+  return (<div className='bg-blue-950 font-roboto min-h-screen'>
     <div className='bg-gray-100 text-pink-500 h-16 flex items-center justify-between px-4 shadow-md'>
       <nav className='flex w-full justify-between items-center'>
         <div className="flex items-center gap-2">

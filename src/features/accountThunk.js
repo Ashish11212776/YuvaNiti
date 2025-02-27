@@ -5,9 +5,9 @@ export const changeUserName = createAsyncThunk(
   "account/changeUserName",
   async ({ userName, userId }, { getState, rejectWithValue }) => {
     try {
-      const token = getState().auth.isAuthenticated;
+      const token = sessionStorage.getItem("authToken")
       console.log(token);
-      
+
 
 
       const response = await axios.post(
@@ -33,7 +33,7 @@ export const changePassword = createAsyncThunk(
   "account/changePassword",
   async ({ password, confirmPassword, userId }, { getState, rejectWithValue }) => {
     try {
-      const token = getState().auth.isAuthenticated;
+      const token = sessionStorage.getItem("authToken")
 
 
       const response = await axios.post(

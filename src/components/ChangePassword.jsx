@@ -86,7 +86,7 @@ const ChangePassword = () => {
     (<div className=' '>
           <div className="mb-6">
             <label className=" text-white text-sm font-semibold mb-2 flex">
-              Username *
+              Password *
             </label>
             <input
               type='text'

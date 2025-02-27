@@ -10,12 +10,10 @@ const authSlice = createSlice({
     profile: JSON.parse(localStorage.getItem("profile")) || {},
     userData: JSON.parse(localStorage.getItem("userData")) || {},
     isOTPSent: false,
-    isAuthenticated: sessionStorage.getItem("authToken") || null,
+    isAuthenticated: false,
     loading: false,
     error: null,
     status:"pending"
-
-
   },
   reducers: {
     logout: (state) => {
@@ -47,11 +45,13 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(verifyOTP.fulfilled, (state, action) => {
+        
         state.loading = false;
         state.status="fulfilled"
         state.profile = action.payload
-
-        state.isAuthenticated = true;
+         state.isAuthenticated = true;
+         
+         
       })
       .addCase(verifyOTP.rejected, (state, action) => {
         state.loading = false;
