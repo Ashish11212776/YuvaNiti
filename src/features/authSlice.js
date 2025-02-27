@@ -10,7 +10,7 @@ const authSlice = createSlice({
     profile: JSON.parse(localStorage.getItem("profile")) || {},
     userData: JSON.parse(localStorage.getItem("userData")) || {},
     isOTPSent: false,
-    isAuthenticated: false,
+    isAuthenticated: sessionStorage.getItem("authToken") || null,
     loading: false,
     error: null,
     status:"pending"
@@ -50,8 +50,8 @@ const authSlice = createSlice({
         state.loading = false;
         state.status="fulfilled"
         state.profile = action.payload
-        state.isAuthenticated=true
 
+        state.isAuthenticated = true;
       })
       .addCase(verifyOTP.rejected, (state, action) => {
         state.loading = false;

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { sendOTP, verifyOTP, loginWithPassword } from "../features/authThunk";
-
+import { sendOTP, verifyOTP, loginWithPassword, getProfile } from "../features/authThunk";
+import { generateCaptcha } from "../utils/generateCaptcha";
 import { RiRefreshFill } from "react-icons/ri";
 import { ToastContainer, toast } from 'react-toastify';
 import OtpLayout from "./OtpLayout";
@@ -23,17 +23,9 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const { isOTPSent, loading, error } = useSelector((state) => state.auth);
 
-    const generateCaptcha = () => {
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
-        let captchaText = "";
-        for (let i = 0; i < 6; i++) {
-            captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        setGeneratedCaptcha(captchaText);
-    };
-
+    
     React.useEffect(() => {
-        generateCaptcha();
+        setGeneratedCaptcha(generateCaptcha());
     }, []);
 
     const handleSendOTP = () => {
@@ -50,6 +42,7 @@ const LoginPage = () => {
         dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
                 toast("User login Successfully !!!!!")
+                
                 navigate("/");
             }
             else if (res.meta.requestStatus === "rejected") {
@@ -140,7 +133,7 @@ const LoginPage = () => {
                                         onChange={(e) => setCaptcha(e.target.value)}
                                     />
                                     <div
-                                        onClick={generateCaptcha}
+                                        onClick={()=>setGeneratedCaptcha(generateCaptcha())}
                                         className="bg-blue-400 text-white font-bold rounded-md text-center tracking-widest h-[52px] w-full sm:w-[45%] shadow-sm flex items-center justify-center cursor-pointer hover:bg-blue-500 transition duration-300 gap-2"
                                     >
                                         <span className="text-sm">{generatedCaptcha}</span>

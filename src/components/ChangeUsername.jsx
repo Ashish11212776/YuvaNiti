@@ -48,8 +48,10 @@ const ChangeUsername = () => {
       toast.error("Failed to change username.");
     });
   };
-
-
+  useEffect(()=>{
+    dispatch(getProfile(userId))
+  },[])
+  
 
   return (
     <div className="p-6 max-w-lg mx-auto flex flex-col item-start ">
