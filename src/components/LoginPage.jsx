@@ -19,8 +19,7 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isOTPSent, loading, error } = useSelector((state) => state.auth);
-    const {id} = useSelector((state) => state.auth.profile.data.userDetails);
-    const userId=id;
+   
     const generateCaptcha = () => {
         const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
         let captchaText = "";

@@ -7,7 +7,7 @@ import { sendOTP, verifyOTP, loginWithPassword, getProfile,userSignupOTP } from 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    profile: JSON.parse(localStorage.getItem("profile")) || {},
+    profile: JSON.parse(localStorage.getItem("profile")) || null,
     userData: JSON.parse(localStorage.getItem("userData")) || {},
     isOTPSent: false,
     isAuthenticated: sessionStorage.getItem("authToken") || null,
