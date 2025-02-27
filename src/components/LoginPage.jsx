@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { sendOTP, verifyOTP, loginWithPassword, getProfile } from "../features/authThunk";
+import { sendOTP, verifyOTP, loginWithPassword } from "../features/authThunk";
 import { generateCaptcha } from "../utils/generateCaptcha";
 import { RiRefreshFill } from "react-icons/ri";
 import { ToastContainer, toast } from 'react-toastify';
@@ -105,7 +105,9 @@ const LoginPage = () => {
                     </p>
                 </div>
 
-                <button className="w-1/2 text-blue-400 border-2 border-blue-400 flex items-center justify-center py-3 rounded-md hover:bg-blue-50 transition-all duration-300 font-medium">
+                <button className="w-1/2 text-blue-400 border-2 border-blue-400 flex items-center justify-center py-3 rounded-md hover:bg-blue-50 transition-all duration-300 font-medium"
+                onClick={() => navigate("/signup")}
+                >
                     Register
                 </button>
 

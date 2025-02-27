@@ -78,7 +78,7 @@ const ChangeUsername = () => {
       ) : (
         <div>
           <input
-            type='text'
+            type='text'  
             name='userName'
             value={userName}
             placeholder={"username"}
