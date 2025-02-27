@@ -24,7 +24,7 @@ const OtpLayout = ({ setOTP, otpEntered, handleVerifyOTP, loading }) => {
         onClick={handleVerifyOTP}
         disabled={loading}
         className={`w-full py-4 rounded-lg text-white font-semibold transition-all duration-300 shadow-md 
-            ${loading ? "bg-green-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700 transform hover:scale-105"}`}
+            ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 transform hover:scale-105"}`}
     >
         {loading ? "Verifying OTP..." : "Verify OTP"}
     </button>
