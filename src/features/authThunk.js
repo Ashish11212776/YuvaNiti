@@ -63,8 +63,8 @@ export const loginWithPassword = createAsyncThunk("auth/loginwithpasword",
       })
 
 
-      const { data } = response
-        ;
+      const { data } = response;
+        
       const { token } = response.data;
 
 

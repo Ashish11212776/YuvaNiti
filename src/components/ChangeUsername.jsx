@@ -1,58 +1,41 @@
-
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeUserName } from '../features/accountThunk';
-import { useNavigate } from 'react-router-dom';
-import { getProfile } from '../features/authThunk';
-import { ToastContainer, toast } from 'react-toastify';
-
-
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { changeUserName } from "../features/accountThunk";
+import { useNavigate } from "react-router-dom";
+import { getProfile } from "../features/authThunk";
+import { ToastContainer, toast } from "react-toastify";
 
 const ChangeUsername = () => {
   const { id } = useSelector((state) => state.auth.profile.data.userDetails);
-  const username = useSelector((state) => state.auth.userData.username)
+  const username = useSelector((state) => state.auth.userData.username);
 
-
-
-
-
-
-  const userId = id
+  const userId = id;
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const [userName, setUserName] = useState(username);
   const [change, setChange] = useState(false);
- 
-
 
   const changeUserNameHandler = () => {
-    dispatch(changeUserName({ userName, userId })).then((res) => {
-
- 
-      if (res.meta.requestStatus ==="fulfilled") {
-       
-      
-       
-        dispatch(getProfile({ userId }));
-        toast("User Name Changed Successfully")
-        navigate("/")
-        setChange(!change)
-        
-        
-     
-       
-      }
-    }).catch((error) => {
-      // Handle error if needed
-      toast.error("Failed to change username.");
-    });
+    dispatch(changeUserName({ userName, userId }))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          dispatch(getProfile({ userId }));
+          toast("User Name Changed Successfully");
+          navigate("/");
+          setChange(!change);
+        }
+      })
+      .catch(() => {
+        toast.error("Failed to change username.");
+      });
   };
- 
 
   return (
     <div className="p-6 max-w-lg mx-auto flex flex-col item-start ">
-      <h2 className="text-2xl font-bold mb-6 text-white flex items-start">Account Settings</h2>
+      <h2 className="text-2xl font-bold mb-6 text-white flex items-start">
+        Account Settings
+      </h2>
       {!change ? (
         <div>
           <div className="mb-6">
@@ -60,8 +43,8 @@ const ChangeUsername = () => {
               Username *
             </label>
             <input
-              type='text'
-              name='userName'
+              type="text"
+              name="userName"
               value={userName}
               placeholder={username}
               className="border rounded-lg px-4 py-2 w-full  bg-gray-100 text-black cursor-not-allowed"
@@ -78,8 +61,8 @@ const ChangeUsername = () => {
       ) : (
         <div>
           <input
-            type='text'  
-            name='userName'
+            type="text"
+            name="userName"
             value={userName}
             placeholder={"username"}
             onChange={(e) => setUserName(e.target.value)}
@@ -100,13 +83,10 @@ const ChangeUsername = () => {
             </button>
           </div>
         </div>
-      )}<ToastContainer />
-      
+      )}
+      <ToastContainer />
     </div>
-    
-    
   );
 };
 
-
-export default ChangeUsername
+export default ChangeUsername;
