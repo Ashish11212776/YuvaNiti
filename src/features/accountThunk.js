@@ -53,3 +53,31 @@ export const changePassword = createAsyncThunk(
 );
 
 
+export const updateUserDetails = createAsyncThunk(
+  "account/updateUserDetails",
+  async ({ data, userId }, { rejectWithValue }) => {
+    try {
+      console.log("Data being sent:", data);
+      
+      const token = sessionStorage.getItem("authToken");
+      console.log("Token:", token);
+
+      const response = await axios.post(
+        `${BASE_URL}/api/v1/customer/update?customerId=${userId}`,
+        data, // ✅ No need to wrap in another object
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data; // ✅ Return response data correctly
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);
+
+
+

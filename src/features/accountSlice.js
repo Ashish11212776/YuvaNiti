@@ -24,7 +24,7 @@ const accountSlice = createSlice({
       .addCase(changeUserName.fulfilled, (state, action) => {
 
         state.loading = false
-        state.userData = action.payload.data
+        // state.userData = action.payload.data
         state.status = "fulfilled"
 
         state.error = null
