@@ -3,10 +3,10 @@ import axios from "axios";
 const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 export const changeUserName = createAsyncThunk(
   "account/changeUserName",
-  async ({ userName, userId }, { getState, rejectWithValue }) => {
+  async ({ userName, userId }, {  rejectWithValue }) => {
     try {
       const token = sessionStorage.getItem("authToken")
-      console.log(token);
+   
 
 
 

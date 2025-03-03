@@ -34,7 +34,8 @@ const accountSlice = createSlice({
         state.loading = false;
         state.status = "rejected"
         state.error = action.payload;
-      })//change Password       
+      })
+      // {change Password}       
       .addCase(changePassword.pending, (state) => {
         state.loading = true
         state.status = "pending"
