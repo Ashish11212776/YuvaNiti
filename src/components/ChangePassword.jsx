@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 const ChangePassword = () => {
-  const { id } = useSelector((state) => state.auth.profile.data.userDetails);
+  const { id } = useSelector((state) => state.auth?.profile?.data?.userDetails);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   

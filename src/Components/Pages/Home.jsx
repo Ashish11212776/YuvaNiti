@@ -22,6 +22,7 @@ const Home = () => {
       <div className="container mx-auto px-4">
         {/* Error Handling */}
         {error ? (
+          
           <div className="text-red-600 text-center text-xl">Something Went Wrong!!</div>
         ) : loading ? ( // Handle loading state
           <div className="mt-20 text-center">
@@ -32,6 +33,7 @@ const Home = () => {
             {data?.map((item, index) => (
               <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden p-4">
                 {/* Title Section */}
+                {console.log(data)}
                 <div className="text-center mb-6">
                   <h1 className="text-3xl font-bold text-gray-800 hover:text-blue-600 transition-colors duration-300">
                     {item?.name}
