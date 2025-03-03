@@ -9,10 +9,10 @@ import { ToastContainer, toast } from 'react-toastify';
 
 
 const ChangeUsername = () => {
-  const { id } = useSelector((state) => state.auth.profile.data.userDetails);
-  const username = useSelector((state) => state.auth.userData.username)
+  const { id } = useSelector((state) => state.auth.profile?.data?.userDetails);
+  const username = useSelector((state) => state.auth.userData?.username)
 
-
+ 
 
 
 

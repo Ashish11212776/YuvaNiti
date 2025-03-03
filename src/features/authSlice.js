@@ -2,6 +2,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { sendOTP, verifyOTP, loginWithPassword, getProfile } from "./authThunk";
+import { toast } from "react-toastify";
 
 
 const authSlice = createSlice({
@@ -17,8 +18,11 @@ const authSlice = createSlice({
   },
   reducers: {
     logout: (state) => {
-      localStorage.removeItem("authToken");
+      localStorage.clear()
+      sessionStorage.clear()
       state.isAuthenticated = false;
+      toast("logout Successful")
+      
     },
   },
   extraReducers: (builder) => {

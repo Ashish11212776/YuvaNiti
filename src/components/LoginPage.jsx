@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { sendOTP, verifyOTP, loginWithPassword } from "../features/authThunk";
+import { sendOTP, verifyOTP, loginWithPassword, getProfile } from "../features/authThunk";
 import { generateCaptcha } from "../utils/generateCaptcha";
 import { RiRefreshFill } from "react-icons/ri";
 import { ToastContainer, toast } from 'react-toastify';
