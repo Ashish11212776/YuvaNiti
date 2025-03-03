@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
-import img from '../../../assets/profile.png';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../features/authSlice';
+import { useState } from "react";
+import img from "../../../assets/profile.png";
+import { logout } from "../../features/authSlice";
+import { useDispatch } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import './Navbar.css'
-import { toast, ToastContainer } from 'react-toastify';
 const Data = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar toggle state
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen); // Toggle sidebar visibility
+    setIsSidebarOpen(!isSidebarOpen); 
+  };
+
+  const handldeClick = () => {
+    dispatch(logout())
+      navigate('/') 
+      toast.success("Logout successfully");
+  
   };
   const token = sessionStorage.getItem("authToken")
 
 
-  const dispatch = useDispatch();
+
 
   function handleLogout() {
     dispatch(logout());
