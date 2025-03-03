@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { generateCaptcha } from "../utils/generateCaptcha";
 import { useDispatch, useSelector } from "react-redux";
-import { userSignupOTP } from "../features/authThunk";
+import { getProfile, userSignupOTP } from "../features/authThunk";
 import OtpLayout from "./OtpLayout";
 import { verifyOTP } from "../features/authThunk";
 import { useNavigate } from "react-router-dom";
@@ -76,8 +76,10 @@ const UserSignUp = () => {
     dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         toast("User login Successfully !!!!!");
+        const userId = res.payload.data.userDetails.id
+        dispatch(getProfile({ userId }))
         setisOtpSend(false);
-        navigate("/account");
+        navigate("/");
       } else if (res.meta.requestStatus === "rejected") {
         toast(res.message);
       }

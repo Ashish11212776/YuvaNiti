@@ -24,7 +24,8 @@ const authSlice = createSlice({
     },
   },    
   extraReducers: (builder) => {
-    builder  //send otp
+    builder  
+    /*{Send Otp}*/ 
       .addCase(sendOTP.pending, (state) => {
         state.loading = true;
         state.status="pending"
@@ -40,14 +41,13 @@ const authSlice = createSlice({
         state.status="rejected"
         state.error = action.payload;
       }) 
-      //verify Otp
+      /*{verify Otp}*/ 
       .addCase(verifyOTP.pending, (state) => {
         state.loading = true;
         state.status="pending"
         state.error = null;
       })
       .addCase(verifyOTP.fulfilled, (state, action) => {
-        
         state.loading = false;
         state.status="fulfilled"
         state.profile = action.payload
@@ -60,7 +60,7 @@ const authSlice = createSlice({
          state.status="rejected"
         state.error = action.payload;
       })
-      //login with password
+      /*{Login WIth Password}*/ 
       .addCase(loginWithPassword.pending, (state) => {
         state.loading = true;
         state.status="pending"
@@ -76,7 +76,7 @@ const authSlice = createSlice({
          state.status="rejected"
         state.error = action.payload
       })
-      //get Profile
+      /*{Get Profile}*/ 
       .addCase(getProfile.pending, (state) => {
         state.loading = true;
         state.status="pending"

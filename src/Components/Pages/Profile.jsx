@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserDetails } from "../../features/accountThunk";
 import { logout } from "../../features/authSlice";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
@@ -101,18 +101,22 @@ const Profile = () => {
   };
 
   // Handle form submission
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const data = {
       ...formValues,
     };
 
     dispatch(updateUserDetails({ data, userId }))
-      .then(() => {
-        dispatch(logout());
-        navigate("/");
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success("plese login to see changes");
+          dispatch(logout());
+          navigate("/");
+        }
       })
       .catch(() => {
-        toast("details not update");
+        toast.error("details not update");
       });
   };
 
@@ -594,6 +598,7 @@ const Profile = () => {
           </button>
         </div>
       </form>
+      <ToastContainer/>
     </div>
   );
 };

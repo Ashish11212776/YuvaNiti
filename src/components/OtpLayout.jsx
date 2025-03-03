@@ -1,4 +1,4 @@
-import React from 'react';
+
 import OtpInput from "react-otp-input";
 
 const OtpLayout = ({ setOTP, otpEntered, handleVerifyOTP, loading }) => {
