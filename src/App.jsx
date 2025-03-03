@@ -10,10 +10,8 @@ import AccountSettings from './Components/AccountSettings'
 
 
 
+
 function App() {
- 
-
-
   return (
     <>
      <Routes>
@@ -27,5 +25,4 @@ function App() {
     </>
   )
 }
-
 export default App

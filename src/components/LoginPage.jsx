@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { sendOTP, verifyOTP, loginWithPassword } from "../features/authThunk";
+import { sendOTP, verifyOTP, loginWithPassword, getProfile } from "../features/authThunk";
 import { generateCaptcha } from "../utils/generateCaptcha";
 import { RiRefreshFill } from "react-icons/ri";
 import { ToastContainer, toast } from 'react-toastify';
 import OtpLayout from "./OtpLayout";
 import { MdCheck } from "react-icons/md";
 import login from "../../public/login.png"
-
+import { FiLogIn } from "react-icons/fi";
 
 
 const LoginPage = () => {
@@ -41,7 +41,7 @@ const LoginPage = () => {
 
             });
         } else {
-            toast("Invalid crediantiels");
+            toast("Invalid credentials");
         }
     };
 
@@ -49,10 +49,7 @@ const LoginPage = () => {
         dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
                 const userId = res.payload.data.userDetails.id
-
-
                 dispatch(getProfile({ userId }))
-
                 navigate("/");
                 toast("User login Successfully !!!!!")
             }
@@ -72,10 +69,8 @@ const LoginPage = () => {
                     navigate("/");
                 }
                 else if (res.meta.requestStatus === "rejected") {
-                    toast(res.message)
-
+                    toast("Something went wrong")
                 }
-
             });
         } else {
             alert("Captcha is incorrect");
@@ -89,7 +84,6 @@ const LoginPage = () => {
             {/* Left Section */}
             <div className="hidden md:flex flex-col justify-center items-start w-1/2 gap-6 p-8 rounded-lg h-auto ">
                 <h2 className="font-bold text-3xl mb-4">New to Yuva Niti?</h2>
-
                 <div className="space-y-4 w-full">
                     <p className="flex items-center gap-3">
                         <MdCheck className="h-5 w-5 text-blue-400 flex-shrink-0" />
@@ -104,7 +98,6 @@ const LoginPage = () => {
                         <span className="text-gray-700">Read Govt Schemes</span>
                     </p>
                 </div>
-
                 <button className="w-1/2 text-blue-400 border-2 border-blue-400 flex items-center justify-center py-3 rounded-md hover:bg-blue-50 transition-all duration-300 font-medium"
                     onClick={() => navigate("/signup")}
                 >
@@ -196,11 +189,11 @@ const LoginPage = () => {
                             disabled={!isFormValid || loading}
                             className={`w-full py-4 rounded-md text-white font-semibold transition-all duration-300 shadow-sm 
                     ${!isFormValid || loading
-                                    ? "bg-purple-400 cursor-not-allowed"
+                                    ? "bg-blue-400 cursor-not-allowed"
                                     : "bg-blue-600 hover:bg-blue-700"
                                 }`}
                         >
-                            {loading ? "Verifying..." : "Login"}
+                            {loading ? "Verifying..." : <div className=" flex justify-center items-center gap-3">Login <FiLogIn /></div>}
                         </button>
 
                         <div className="flex justify-center mt-5">
@@ -215,12 +208,12 @@ const LoginPage = () => {
                 )}
 
                 {error && (
-                    <div className="text-red-600 font-medium mt-4 text-center p-3 bg-red-50 rounded-md">
+                    <div className="text-red-600 font-medium mt-4 text-center p-3 bg-red-50 rounded-md font-roboto">
                         Error: {error.message || "Something went wrong!"}
                     </div>
                 )}
             </div>
-            <ToastContainer />
+            <ToastContainer/>
         </div>
 
     );

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { generateCaptcha } from "../utils/generateCaptcha";
 import { useDispatch, useSelector } from "react-redux";
-import { userSignupOTP } from "../features/authThunk";
+import { getProfile, userSignupOTP } from "../features/authThunk";
 import OtpLayout from "./OtpLayout";
 import { verifyOTP } from "../features/authThunk";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ const UserSignUp = () => {
   const dispatch = useDispatch();
   const [isOtpSend, setisOtpSend] = useState(false);
   const navigate = useNavigate();
-  const [Errors,setErrors]=useState("")
+  const [Errors, setErrors] = useState("")
 
   const { loading } = useSelector((state) => state.auth);
 
@@ -76,15 +76,17 @@ const UserSignUp = () => {
     dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         toast("User login Successfully !!!!!");
+        const userId = res.payload.data.userDetails.id
+        dispatch(getProfile({ userId }))
         setisOtpSend(false);
-        navigate("/account");
+        navigate("/");
       } else if (res.meta.requestStatus === "rejected") {
         toast(res.message);
       }
     });
   };
 
-   return (
+  return (
     <div className="flex flex-col md:flex-row m-6 p-4 w-full md:w-[90%] lg:w-[80%] min-h-screen font-roboto mx-auto  bg-white">
       {/* Left Section */}
       <div className="hidden md:flex flex-col justify-center items-start w-1/2 gap-6 p-8 rounded-lg h-1/2 shadow-slate-300 bg-gray-100">
@@ -103,7 +105,7 @@ const UserSignUp = () => {
         </div>
 
         <button className="w-full text-blue-600 border-2 border-blue-600 py-3 rounded-md hover:bg-blue-50 transition-all duration-300 font-medium"
-        onClick={() => navigate("/login")} 
+          onClick={() => navigate("/login")}
         >
           Already have Account
         </button>
@@ -115,7 +117,7 @@ const UserSignUp = () => {
 
       {/* Right Section */}
       <div className="flex flex-col justify-top mt-52 w-full md:w-1/2 bg-white shadow-slate-300 h-1/2 p-8 rounded-lg shadow-sm">
-       <h1 className="mb-10 text-left text-3xl text-gray-900">Register User</h1>
+        <h1 className="mb-10 text-left text-3xl text-gray-900">Register User</h1>
         {!isOtpSend ? (
           <>
             <label className="text-xl font-medium mb-1 text-left block text-gray-300">Mobile Number</label>
@@ -162,7 +164,7 @@ const UserSignUp = () => {
           <OtpLayout setOTP={setOTP} otpEntered={otpEntered} handleVerifyOTP={handleVerifyOTP} loading={loading} />
         )}
       </div>
-       <ToastContainer />
+      <ToastContainer />
     </div>
   );
 };
