@@ -8,8 +8,6 @@ export const changeUserName = createAsyncThunk(
       const token = sessionStorage.getItem("authToken")
    
 
-
-
       const response = await axios.post(
         `${BASE_URL}/api/v1/customer/update-username?customerId=${userId}`,
         { username: userName },
@@ -19,9 +17,7 @@ export const changeUserName = createAsyncThunk(
           },
         }
       );
-
       const { data } = response;
-
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -31,18 +27,18 @@ export const changeUserName = createAsyncThunk(
 
 export const changePassword = createAsyncThunk(
   "account/changePassword",
-  async ({ password, confirmPassword, userId }, { getState, rejectWithValue }) => {
+  async ({ password, confirmPassword, userId }, { rejectWithValue }) => {
     try {
-      const token = sessionStorage.getItem("authToken")
-
+      const token = sessionStorage.getItem("authToken");
 
       const response = await axios.post(
         `${BASE_URL}/api/v1/customer/create-or-update-password?customerId=${userId}`,
-        { password: password, confirmPassword: confirmPassword }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+        { password: password, confirmPassword: confirmPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       return response.data;
@@ -52,4 +48,28 @@ export const changePassword = createAsyncThunk(
   }
 );
 
+export const updateUserDetails = createAsyncThunk(
+  "account/updateUserDetails",
+  async ({ data, userId }, { rejectWithValue }) => {
+    try {
+      console.log("Data being sent:", data);
 
+      const token = sessionStorage.getItem("authToken");
+      console.log("Token:", token);
+
+      const response = await axios.post(
+        `${BASE_URL}/api/v1/customer/update?customerId=${userId}`,
+        data, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data; 
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);

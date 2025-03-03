@@ -1,13 +1,11 @@
-
-import './App.css'
-import {Routes,Route} from 'react-router-dom';
-import Profile from './Components/Pages/Profile'
-import About from './Components/Pages/About';
-import Home from './Components/Pages/Home';
-import UserSignUp from './Components/UserSignup'
-import LoginPage from './Components/LoginPage'
-import AccountSettings from './Components/AccountSettings'
-
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import Profile from "./Components/Pages/Profile";
+import About from "./Components/Pages/About";
+import Home from "./Components/Pages/Home";
+import UserSignUp from "./Components/UserSignup";
+import LoginPage from "./Components/LoginPage";
+import AccountSettings from "./Components/AccountSettings";
 
 
 
@@ -25,4 +23,6 @@ function App() {
     </>
   )
 }
-export default App
+
+export default App;
+

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import {useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeUserName } from '../features/accountThunk';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +27,7 @@ const ChangeUsername = () => {
         navigate("/");
         setChange(!change);
       }
-    }).catch((error) => {
+    }).catch(() => {
       toast.error("Failed to change username.");
     });
   };
@@ -41,8 +41,8 @@ const ChangeUsername = () => {
               Username *  
             </label>
             <input
-              type='text'
-              name='userName'
+              type="text"
+              name="userName"
               value={userName}
               placeholder={username}
               className="border rounded-lg px-4 py-2 w-full bg-gray-50 text-gray-600 cursor-not-allowed"

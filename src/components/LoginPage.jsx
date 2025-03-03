@@ -11,6 +11,7 @@ import login from "../../public/login.png"
 import { FiLogIn } from "react-icons/fi";
 
 
+
 const LoginPage = () => {
     const [mobileNumber, setMobileNumber] = useState("");
     const [otpEntered, setOTP] = useState("");

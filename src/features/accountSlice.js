@@ -21,10 +21,10 @@ const accountSlice = createSlice({
         state.status = "pending"
         state.error = null;
       })
-      .addCase(changeUserName.fulfilled, (state, action) => {
+      .addCase(changeUserName.fulfilled, (state) => {
 
         state.loading = false
-        state.userData = action.payload.data
+        // state.userData = action.payload.data
         state.status = "fulfilled"
 
         state.error = null

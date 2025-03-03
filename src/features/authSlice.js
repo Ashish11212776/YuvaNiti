@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { sendOTP, verifyOTP, loginWithPassword, getProfile } from "./authThunk";
 
 
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -17,10 +18,11 @@ const authSlice = createSlice({
   },
   reducers: {
     logout: (state) => {
-      localStorage.removeItem("authToken");
-      state.isAuthenticated = false;
+      localStorage.clear();
+      sessionStorage.clear();
+      state.isAuthenticated=false;
     },
-  },
+  },    
   extraReducers: (builder) => {
     builder  
     /*{Send Otp}*/ 
