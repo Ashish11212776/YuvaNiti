@@ -11,16 +11,16 @@ import AccountSettings from "./Components/AccountSettings";
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/signup" element={<UserSignUp />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/account" element={<AccountSettings />} />
-      </Routes>
+     <Routes>
+      <Route path='/' element={<Home/>}/>
+      <Route path='/about' element={<About/>}/>
+      <Route path='/profile' element={<Profile/>}/>
+      <Route path="/signup" element={<UserSignUp />} />
+      <Route  path='/login' element={<LoginPage/>}/>
+      <Route path='/account' element={<AccountSettings/>}/>
+    </Routes>
     </>
-  );
+  )
 }
 
 export default App;
