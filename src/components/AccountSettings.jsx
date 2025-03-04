@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 import ChangeUsername from './ChangeUsername';
 import ChangePassword from './ChangePassword';
 import { useSelector } from 'react-redux';
@@ -33,6 +33,7 @@ const AccountSettings = () => {
           </div>
         </div>
       </div>
+      <Outlet />
     </div>
   );
 };
