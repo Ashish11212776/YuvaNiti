@@ -32,6 +32,7 @@ const ChangeUsername = () => {
     });
   };
     return (
+      
     <div className="p-6 max-w-lg mx-auto flex flex-col item-start text-slate-500 font-roboto">
       <h2 className="text-2xl font-bold mb-6 text-blue-600 flex items-start gap-3 justify-start"><CiUser className=' h-8'/>Account Settings</h2>
       {!change ? (

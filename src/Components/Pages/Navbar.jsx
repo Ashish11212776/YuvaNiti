@@ -35,8 +35,9 @@ const Data = () => {
 
           <div className="sidebar-options flex flex-col items-start space-y-4">
             <a href="/profile">Profile</a>
-            <button onClick={handleLogout}>LOGOUT</button>
+            <button onClick={handleLogout}>Logout</button>
             <a href="/account">Account Settings</a>
+            <a href="/dashboard">User Dashboard</a>
           </div>
         </div>
         {/* Main Content */}

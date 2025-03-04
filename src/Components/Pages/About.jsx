@@ -1,5 +1,4 @@
-import React from 'react'
-import Navbar from './Navbar'
+
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
 const About = () => {

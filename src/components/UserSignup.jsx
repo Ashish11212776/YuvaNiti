@@ -21,7 +21,7 @@ const UserSignUp = () => {
   const navigate = useNavigate();
 
 
-  const { loading,status } = useSelector((state) => state.auth);
+  const { loading,status } = useSelector((state) => state?.auth);
 
   useEffect(() => {
     setCaptchaValue(generateCaptcha());
@@ -76,7 +76,7 @@ const UserSignUp = () => {
     dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         toast("User login Successfully !!!!!");
-        const userId = res.payload.data.userDetails.id
+        const userId = res?.payload?.data?.userDetails?.id
         dispatch(getProfile({ userId }))
         setisOtpSend(false);
         navigate("/");
@@ -140,7 +140,7 @@ const UserSignUp = () => {
             <input
               type="text"
               placeholder="Enter Mobile Number"
-              className="border border-gray-300 p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50 text-sm h-[52px] w-full rounded-md shadow-sm"
+              className="border border-gray-300 p-4 mb-4 text-xl text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50 text-sm h-[52px] w-full rounded-md shadow-sm"
               value={user_number}
               name="usernumber"
               onChange={handleChange}
@@ -155,14 +155,14 @@ const UserSignUp = () => {
               <input
                 type="text"
                 placeholder="Enter Captcha"
-                className="border border-gray-300 p-4 focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50 text-sm h-[52px] w-full sm:w-[50%] rounded-md shadow-sm"
+                className="border border-gray-300 p-4 focus:outline-none text-xl text-gray-700 focus:ring-2 focus:ring-blue-300 bg-gray-50 text-sm h-[52px] w-full sm:w-[50%] rounded-md shadow-sm"
                 value={user_captcha}
                 name="captcha"
                 onChange={handleChange}
               />
               <div
                 onClick={() => setCaptchaValue(generateCaptcha())}
-                className="bg-blue-400 text-white font-bold rounded-md text-center tracking-widest h-[52px] w-full sm:w-[45%] shadow-sm flex items-center justify-center cursor-pointer hover:bg-blue-500 transition duration-300 gap-2"
+                className="bg-blue-300 text-white font-bold rounded-md text-center tracking-widest h-[52px] w-full sm:w-[45%] shadow-sm flex items-center justify-center cursor-pointer hover:bg-blue-500 transition duration-300 gap-2"
               >
                 <span className="text-sm">{captchaValue}</span>
                 <RiRefreshFill className="w-5 h-5" />

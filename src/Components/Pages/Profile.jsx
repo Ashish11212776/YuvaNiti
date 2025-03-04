@@ -1,16 +1,27 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserDetails } from "../../features/accountThunk";
-import { logout } from "../../features/authSlice";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate,Outlet } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
+import { getProfile } from "../../features/authThunk";
 
 const Profile = () => {
-  const profileData = useSelector((state) => state.auth.userData);
-  const { id } = useSelector((state) => state.auth.profile.data.userDetails);
+  const profileData = useSelector((state) => state?.auth?.userData);
+  const { error } = useSelector((state) => state?.account);
+
+  const { id } = useSelector(
+    (state) => state?.auth?.profile?.data?.userDetails
+  );
   const navigate = useNavigate();
   const userId = id;
   const dispatch = useDispatch();
+  const [errors, setErrors] = useState({
+    otherCategoryValidUpto: "",
+    dob: "",
+    categoryIssueDate: "",
+    categoryValidUpto: "",
+    otherCategoryDateOfIssue: "",
+  });
   const [formValues, setFormValues] = useState({
     firstName: "",
     lastName: "",
@@ -41,39 +52,67 @@ const Profile = () => {
     if (profileData) {
       setFormValues({
         ...formValues,
-        firstName: profileData.firstName || "",
-        lastName: profileData.lastName || "",
-        fathersName: profileData.fathersName || "",
-        mothersName: profileData.mothersName || "",
-        adharNumber: profileData.adharNumber || "",
-        dob: profileData.dob || "",
-        religion: profileData.religion || "Hindu",
-        gender: profileData.gender || "Male",
-        category: profileData.category || "GEN",
-        isOtherOrStateCategory: profileData.isOtherOrStateCategory || false,
-        otherOrStateCategory: profileData.otherOrStateCategory || "",
-        categoryIssueDate: profileData.categoryIssueDate || "",
-        categoryValidUpto: profileData.categoryValidUpto || "",
-        otherCategoryDateOfIssue: profileData.otherCategoryDateOfIssue || "",
-        otherCategoryValidUpto: profileData.otherCategoryValidUpto || "",
-        belongsToMinority: profileData.belongsToMinority || false,
-        domicile: profileData.domicile || false,
-        disability: profileData.disability || false,
-        exService: profileData.exService || false,
-        isMarried: profileData.isMarried || false,
-        identificationMark1: profileData.identificationMark1 || "",
-        identificationMark2: profileData.identificationMark2 || "",
-        subcategory: profileData.subcategory || "",
+        firstName: profileData?.firstName || "",
+        lastName: profileData?.lastName || "",
+        fathersName: profileData?.fathersName || "",
+        mothersName: profileData?.mothersName || "",
+        adharNumber: profileData?.adharNumber || "",
+        dob: profileData?.dob || "",
+        religion: profileData?.religion || "Hindu",
+        gender: profileData?.gender || "Male",
+        category: profileData?.category || "GEN",
+        isOtherOrStateCategory: profileData?.isOtherOrStateCategory || false,
+        otherOrStateCategory: profileData?.otherOrStateCategory || "",
+        categoryIssueDate: profileData?.categoryIssueDate || "",
+        categoryValidUpto: profileData?.categoryValidUpto || "",
+        otherCategoryDateOfIssue: profileData?.otherCategoryDateOfIssue || "",
+        otherCategoryValidUpto: profileData?.otherCategoryValidUpto || "",
+        belongsToMinority: profileData?.belongsToMinority || false,
+        domicile: profileData?.domicile || false,
+        disability: profileData?.disability || false,
+        exService: profileData?.exService || false,
+        isMarried: profileData?.isMarried || false,
+        identificationMark1: profileData?.visible_identification_mark_1 || "",
+        identificationMark2: profileData?.visible_identification_mark_2 || "",
+        subcategory: profileData?.subcategory || "",
       });
     }
   }, [profileData]);
 
+  const patterns = {
+    firstName: /^[a-zA-Z\s]{1,50}$/,
+    lastName: /^[a-zA-Z\s]{1,50}$/,
+    fathersName: /^[a-zA-Z\s]{1,50}$/,
+    mothersName: /^[a-zA-Z\s]{1,50}$/,
+  };
+  const dateRegex = /^(\d{2})-(\d{2})-(\d{4})$/;
+
+  const blurValidation = (e) => {
+    const { name, value } = e.target;
+    if (value && !dateRegex.test(value)) {
+      setErrors({ ...errors, [name]: "Invalid date format! Use DD-MM-YYYY" });
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
+
+    if (patterns[name]) {
+      if (value === "" || patterns[name].test(value)) {
+        setFormValues((prevValues) => ({
+          ...prevValues,
+          [name]: value,
+        }));
+      } else {
+        console.warn(`Invalid input for ${name}: ${value}`);
+      }
+    } else {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        [name]: value.trim(),
+      }));
+    }
+    setErrors({ ...errors, [e.target.name]: "" });
   };
 
   const handleSelectChange = (e) => {
@@ -82,6 +121,7 @@ const Profile = () => {
       ...formValues,
       [name]: value,
     });
+    setErrors({ ...errors, [e.target.name]: "" });
   };
 
   const handleDateChange = (e) => {
@@ -90,6 +130,7 @@ const Profile = () => {
       ...formValues,
       [name]: value,
     });
+    setErrors({ ...errors, [e.target.name]: "" });
   };
 
   const handleRadioChange = (e) => {
@@ -98,6 +139,7 @@ const Profile = () => {
       ...formValues,
       [name]: value === "YES",
     });
+    setErrors({ ...errors, [e.target.name]: "" });
   };
 
   // Handle form submission
@@ -110,13 +152,13 @@ const Profile = () => {
     dispatch(updateUserDetails({ data, userId }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          toast.success("plese login to see changes");
-          dispatch(logout());
+          toast.success("profile update");
+          dispatch(getProfile({ userId }));
           navigate("/");
         }
       })
       .catch(() => {
-        toast.error("details not update");
+        toast.error(error?.message);
       });
   };
 
@@ -137,9 +179,9 @@ const Profile = () => {
               type="text"
               name="firstName"
               placeholder="Name"
+              className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
               value={formValues.firstName}
               onChange={handleInputChange}
-              className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
               required
             />
           </div>
@@ -153,8 +195,8 @@ const Profile = () => {
               name="lastName"
               placeholder="Last Name"
               value={formValues.lastName}
-              onChange={handleInputChange}
               className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
+              onChange={handleInputChange}
               required
             />
           </div>
@@ -216,9 +258,14 @@ const Profile = () => {
               placeholder="DD-MM-YYYY"
               value={formValues.dob}
               onChange={handleInputChange}
-              className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
+              onBlur={(e) => blurValidation(e)}
+              className={`p-3 w-full border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white 
+                  ${errors.dob ? "border-red-500" : "border-blue-200"}`}
               required
             />
+            {errors.dob && (
+              <p className="text-red-500 text-sm mt-2">{errors.dob}</p>
+            )}
           </div>
 
           {/* Religion and Gender - Row 4 */}
@@ -301,8 +348,17 @@ const Profile = () => {
               placeholder="DD-MM-YYYY"
               value={formValues.categoryIssueDate}
               onChange={handleDateChange}
-              className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
+              onBlur={(e) => blurValidation(e)}
+              className={`p-3 w-full border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white 
+                  ${
+                    errors.categoryIssueDate
+                      ? "border-red-500"
+                      : "border-blue-200"
+                  }`}
             />
+            <p className="text-red-500 text-sm mt-2">
+              {errors.categoryIssueDate}
+            </p>
           </div>
 
           <div>
@@ -368,7 +424,6 @@ const Profile = () => {
                   required={formValues.isOtherOrStateCategory}
                 />
               </div>
-
               <div>
                 <label className="block text-blue-800 font-medium mb-1">
                   Other Category Date of Issue
@@ -379,8 +434,17 @@ const Profile = () => {
                   placeholder="DD-MM-YYYY"
                   value={formValues.otherCategoryDateOfIssue}
                   onChange={handleDateChange}
-                  className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
+                  onBlur={(e) => blurValidation(e)}
+                  className={`p-3 w-full border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white 
+                  ${
+                    errors.otherCategoryDateOfIssue
+                      ? "border-red-500"
+                      : "border-blue-200"
+                  }`}
                 />
+                <p className="text-red-500 text-sm mt-2">
+                  {errors.otherCategoryDateOfIssue}
+                </p>
               </div>
 
               <div>
@@ -393,8 +457,17 @@ const Profile = () => {
                   placeholder="DD-MM-YYYY"
                   value={formValues.otherCategoryValidUpto}
                   onChange={handleDateChange}
-                  className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
+                  onBlur={(e) => blurValidation(e)}
+                  className={`p-3 w-full border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white 
+                  ${
+                    errors.otherCategoryValidUpto
+                      ? "border-red-500"
+                      : "border-blue-200"
+                  }`}
                 />
+                <p className="text-red-500 text-sm mt-2">
+                  {errors.otherCategoryValidUpto}
+                </p>
               </div>
             </>
           )}
@@ -598,8 +671,8 @@ const Profile = () => {
           </button>
         </div>
       </form>
-      <Outlet/>
-      <ToastContainer/>
+      <Outlet />
+      <ToastContainer />
     </div>
   );
 };
