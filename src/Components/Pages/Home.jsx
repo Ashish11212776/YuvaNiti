@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllData } from '../../features/dataThunks';
 import loa from '../../../assets/loo.gif';
 import giff from '../../../assets/lo.gif';
+import { filledForms, recommendedForm, savedForms } from '../../features/accountThunk';
 
 const Home = () => {
+   const { id } = useSelector((state) => state.auth.profile.data.userDetails);
   const dispatch = useDispatch();
  
  
@@ -12,6 +14,9 @@ const Home = () => {
  
   useEffect(() => {
     dispatch(getAllData())
+     dispatch(savedForms({ userId: id }));
+                dispatch(filledForms({ userId: id }));
+                dispatch(recommendedForm({ userId: id }));
   }, []); 
 
   return (
