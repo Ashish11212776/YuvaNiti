@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { MdCheck } from "react-icons/md";
 import { RiRefreshFill } from "react-icons/ri";
 import login from "../../public/login.png";
+import StatusReject from "./Pages/StatusReject.jsx";
 
 const UserSignUp = () => {
   const [user_number, setUserNumber] = useState("");
@@ -18,9 +19,9 @@ const UserSignUp = () => {
   const dispatch = useDispatch();
   const [isOtpSend, setisOtpSend] = useState(false);
   const navigate = useNavigate();
-  const [Errors, setErrors] = useState("");
 
-  const { loading } = useSelector((state) => state.auth);
+
+  const { loading,status } = useSelector((state) => state?.auth);
 
   useEffect(() => {
     setCaptchaValue(generateCaptcha());
@@ -48,7 +49,6 @@ const UserSignUp = () => {
       newErrors.user_captcha = "Captcha does not match.";
     }
 
-    setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
   const mobileNumber = user_number;
@@ -76,7 +76,7 @@ const UserSignUp = () => {
     dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         toast("User login Successfully !!!!!");
-        const userId = res.payload.data.userDetails.id
+        const userId = res?.payload?.data?.userDetails?.id
         dispatch(getProfile({ userId }))
         setisOtpSend(false);
         navigate("/");
@@ -87,6 +87,8 @@ const UserSignUp = () => {
   };
 
   return (
+    <>{
+      status?
     <div className="flex flex-col md:flex-row m-6 p-4 w-full md:w-[90%] lg:w-[80%] min-h-screen font-roboto mx-auto  bg-white">
       {/* Left Section */}
       <div className="hidden md:flex flex-col justify-center items-start w-1/2 gap-6 p-8 rounded-lg h-1/2 shadow-slate-300 bg-gray-100">
@@ -138,7 +140,7 @@ const UserSignUp = () => {
             <input
               type="text"
               placeholder="Enter Mobile Number"
-              className="border border-gray-300 p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50 text-sm h-[52px] w-full rounded-md shadow-sm"
+              className="border border-gray-300 p-4 mb-4 text-xl text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50 text-sm h-[52px] w-full rounded-md shadow-sm"
               value={user_number}
               name="usernumber"
               onChange={handleChange}
@@ -153,14 +155,14 @@ const UserSignUp = () => {
               <input
                 type="text"
                 placeholder="Enter Captcha"
-                className="border border-gray-300 p-4 focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50 text-sm h-[52px] w-full sm:w-[50%] rounded-md shadow-sm"
+                className="border border-gray-300 p-4 focus:outline-none text-xl text-gray-700 focus:ring-2 focus:ring-blue-300 bg-gray-50 text-sm h-[52px] w-full sm:w-[50%] rounded-md shadow-sm"
                 value={user_captcha}
                 name="captcha"
                 onChange={handleChange}
               />
               <div
                 onClick={() => setCaptchaValue(generateCaptcha())}
-                className="bg-blue-400 text-white font-bold rounded-md text-center tracking-widest h-[52px] w-full sm:w-[45%] shadow-sm flex items-center justify-center cursor-pointer hover:bg-blue-500 transition duration-300 gap-2"
+                className="bg-blue-300 text-white font-bold rounded-md text-center tracking-widest h-[52px] w-full sm:w-[45%] shadow-sm flex items-center justify-center cursor-pointer hover:bg-blue-500 transition duration-300 gap-2"
               >
                 <span className="text-sm">{captchaValue}</span>
                 <RiRefreshFill className="w-5 h-5" />
@@ -190,7 +192,10 @@ const UserSignUp = () => {
         )}
       </div>
       <ToastContainer />
-    </div>
+    </div>:
+    <StatusReject/>
+     }
+      </>
   );
 };
 

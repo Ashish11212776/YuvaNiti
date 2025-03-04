@@ -21,7 +21,7 @@ function App() {
         <Route element={<PrivateRoutes />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/account" element={<AccountSettings />} />
-          <Route path="/user-dashboard" element={<DashBoard/>}/>
+          <Route path="/dashboard" element={<DashBoard/>}/>
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
