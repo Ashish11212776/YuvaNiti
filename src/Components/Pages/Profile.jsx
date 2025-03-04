@@ -15,13 +15,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const userId = id;
   const dispatch = useDispatch();
-  const [errors, setErrors] = useState({
-    otherCategoryValidUpto: "",
-    dob: "",
-    categoryIssueDate: "",
-    categoryValidUpto: "",
-    otherCategoryDateOfIssue: "",
-  });
+  const [errors, setErrors] = useState({});
   const [formValues, setFormValues] = useState({
     firstName: "",
     lastName: "",
