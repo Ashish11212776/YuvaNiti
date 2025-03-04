@@ -1,20 +1,23 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllData } from '../../features/dataThunks';
 import loa from '../../../assets/loo.gif';
 import giff from '../../../assets/lo.gif';
+import StatusReject from './StatusReject';
 
 const Home = () => {
   const dispatch = useDispatch();
  
  
-  const { data,error,loading} = useSelector((state) => state.app);
+  const { data,error,loading,status} = useSelector((state) => state.app);
  
   useEffect(() => {
     dispatch(getAllData())
   }, []); 
 
   return (
+    <>
+    {status?
     <div className="min-h-screen bg-gray-100 py-6">
       <h1 className="text-black-200 text-center text-3xl">SERVICES</h1>
       <p className="text-center font-medium underline">Discover jobs across popular roles</p>
@@ -59,7 +62,9 @@ const Home = () => {
           </div>
         )}
       </div>
-    </div>
+    </div>:<StatusReject/>
+    }
+    </>
   );
 };
 

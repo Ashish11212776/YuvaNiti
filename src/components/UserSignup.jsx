@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { MdCheck } from "react-icons/md";
 import { RiRefreshFill } from "react-icons/ri";
 import login from "../../public/login.png";
+import StatusReject from "./Pages/StatusReject.jsx";
 
 const UserSignUp = () => {
   const [user_number, setUserNumber] = useState("");
@@ -18,9 +19,9 @@ const UserSignUp = () => {
   const dispatch = useDispatch();
   const [isOtpSend, setisOtpSend] = useState(false);
   const navigate = useNavigate();
-  const [Errors, setErrors] = useState("");
 
-  const { loading } = useSelector((state) => state.auth);
+
+  const { loading,status } = useSelector((state) => state.auth);
 
   useEffect(() => {
     setCaptchaValue(generateCaptcha());
@@ -48,7 +49,6 @@ const UserSignUp = () => {
       newErrors.user_captcha = "Captcha does not match.";
     }
 
-    setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
   const mobileNumber = user_number;
@@ -87,6 +87,8 @@ const UserSignUp = () => {
   };
 
   return (
+    <>{
+      status?
     <div className="flex flex-col md:flex-row m-6 p-4 w-full md:w-[90%] lg:w-[80%] min-h-screen font-roboto mx-auto  bg-white">
       {/* Left Section */}
       <div className="hidden md:flex flex-col justify-center items-start w-1/2 gap-6 p-8 rounded-lg h-1/2 shadow-slate-300 bg-gray-100">
@@ -190,7 +192,10 @@ const UserSignUp = () => {
         )}
       </div>
       <ToastContainer />
-    </div>
+    </div>:
+    <StatusReject/>
+     }
+      </>
   );
 };
 
