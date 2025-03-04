@@ -11,6 +11,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const userId = id;
   const dispatch = useDispatch();
+  
   const [formValues, setFormValues] = useState({
     firstName: "",
     lastName: "",
@@ -61,20 +62,51 @@ const Profile = () => {
         disability: profileData.disability || false,
         exService: profileData.exService || false,
         isMarried: profileData.isMarried || false,
-        identificationMark1: profileData.identificationMark1 || "",
-        identificationMark2: profileData.identificationMark2 || "",
+        identificationMark1: profileData.visible_identification_mark_1 || "",
+        identificationMark2: profileData.visible_identification_mark_2 || "",
         subcategory: profileData.subcategory || "",
       });
     }
   }, [profileData]);
-
+  
+  
+  const patterns = {
+    
+    
+    firstName: /^[a-zA-Z\s]{1,50}$/,
+    lastName: /^[a-zA-Z\s]{1,50}$/, 
+    fathersName: /^[a-zA-Z\s]{1,50}$/, 
+    mothersName: /^[a-zA-Z\s]{1,50}$/, 
+    dob: /^(\d{0,2})?-?(\d{0,2})?-?(\d{0,4})?$/,
+    otherCategoryDateOfIssue: /^(\d{0,2})?-?(\d{0,2})?-?(\d{0,4})?$/, 
+    otherCategoryValidUpto: /^(\d{0,2})?-?(\d{0,2})?-?(\d{0,4})?$/ 
+  };
+  
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
+  
+   
+    if (patterns[name]) {
+      if (value === "" || patterns[name].test(value)) { 
+       
+        setFormValues((prevValues) => ({
+          ...prevValues,
+          [name]: value, 
+        }));
+      } else {
+        console.warn(`Invalid input for ${name}: ${value}`);
+      }
+    } else {
+  
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        [name]: value.trim(),
+      }));
+    }
   };
+  
+
 
   const handleSelectChange = (e) => {
     const { name, value } = e.target;
@@ -83,7 +115,7 @@ const Profile = () => {
       [name]: value,
     });
   };
-
+ 
   const handleDateChange = (e) => {
     const { name, value } = e.target;
     setFormValues({
@@ -119,6 +151,8 @@ const Profile = () => {
         toast.error("details not update");
       });
   };
+  // Add this function to your component alongside your other handlers
+
 
   return (
     <div className="max-w-4xl mx-auto p-8 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-lg border border-blue-100">
@@ -137,9 +171,10 @@ const Profile = () => {
               type="text"
               name="firstName"
               placeholder="Name"
+              className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
               value={formValues.firstName}
               onChange={handleInputChange}
-              className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
+            
               required
             />
           </div>
@@ -153,8 +188,9 @@ const Profile = () => {
               name="lastName"
               placeholder="Last Name"
               value={formValues.lastName}
-              onChange={handleInputChange}
               className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
+              onChange={handleInputChange}
+              
               required
             />
           </div>

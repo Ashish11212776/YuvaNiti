@@ -6,6 +6,7 @@ import Home from "./Components/Pages/Home";
 import UserSignUp from "./Components/UserSignup";
 import LoginPage from "./Components/LoginPage";
 import AccountSettings from "./Components/AccountSettings";
+import DashBoard from "./components/Pages/DashBoard";
 
 
 
@@ -19,6 +20,7 @@ function App() {
       <Route path="/signup" element={<UserSignUp />} />
       <Route  path='/login' element={<LoginPage/>}/>
       <Route path='/account' element={<AccountSettings/>}/>
+      <Route path="/dashboard" element={<DashBoard/>}/>
     </Routes>
     </>
   )

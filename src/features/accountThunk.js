@@ -73,3 +73,75 @@ export const updateUserDetails = createAsyncThunk(
     }
   }
 );
+export const savedForms = createAsyncThunk(
+  "account/savedForms",
+  async ({ userId }, { rejectWithValue }) => {
+    try {
+     
+
+      const token = sessionStorage.getItem("authToken");
+      console.log("Token:", token);
+
+      const response = await axios.get(
+        `${BASE_URL}/api/v1/customer/forms/show-saved-forms?customer_id=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data; 
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);
+export const recommendedForm = createAsyncThunk(
+  "account/recommendedForm",
+  async ({ userId }, { rejectWithValue }) => {
+    try {
+     
+
+      const token = sessionStorage.getItem("authToken");
+      console.log("Token:", token);
+
+      const response = await axios.get(
+        `${BASE_URL}/api/v1/customer/forms/show-recommended-forms?customer_id=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data; 
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);
+export const filledForms = createAsyncThunk(
+  "account/filledForms",
+  async ({ userId }, { rejectWithValue }) => {
+    try {
+     
+
+      const token = sessionStorage.getItem("authToken");
+      
+
+      const response = await axios.get(
+        `${BASE_URL}/api/v1/customer/forms/show-filled-forms?customer_id=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data; 
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);

@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { changePassword, changeUserName } from "./accountThunk";
+import { changePassword, changeUserName, filledForms, recommendedForm, savedForms } from "./accountThunk";
 
 const accountSlice = createSlice({
   name: "account",
   initialState: {
+    SavedForms:null,
+    RecommendedForm:null,
+    FilledForms:null,
     loading: false,
     error: null,
     status: "pending"
@@ -49,6 +52,62 @@ const accountSlice = createSlice({
         state.status = "rejected"
         state.error = action.payload
       })
+
+
+
+      .addCase(savedForms.pending, (state) => {
+        state.loading = true
+        state.status = "pending"
+        state.error = null
+      }).addCase(savedForms.fulfilled, (state,action) => {
+        state.loading = false;
+        state.status = "fulfilled"
+        
+        state.SavedForms=action.payload;
+        
+
+        state.error = null
+      }).addCase(savedForms.rejected, (state, action) => {
+        state.loading = false
+        state.status = "rejected"
+        state.error = action.payload
+      })
+
+      .addCase(recommendedForm.pending, (state) => {
+        state.loading = true
+        state.status = "pending"
+        state.error = null
+      }).addCase(recommendedForm.fulfilled, (state,action) => {
+        state.loading = false;
+        state.status = "fulfilled"
+        state.RecommendedForm=action.payload;
+        
+        state.error = null
+      }).addCase(recommendedForm.rejected, (state, action) => {
+        state.loading = false
+        state.status = "rejected"
+        state.error = action.payload
+      })
+
+      .addCase(filledForms.pending, (state) => {
+        state.loading = true
+        state.status = "pending"
+        state.error = null
+      }).addCase(filledForms.fulfilled, (state,action) => {
+        state.loading = false;
+        state.status = "fulfilled"
+        state.FilledForms=action.payload;
+    
+        state.error = null
+      }).addCase(filledForms.rejected, (state, action) => {
+        state.loading = false
+        state.status = "rejected"
+        state.error = action.payload
+      })
+
+      
+
+      
 
 
   },
