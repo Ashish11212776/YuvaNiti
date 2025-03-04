@@ -2,33 +2,24 @@ import { useState } from "react";
 import img from "../../../assets/profile.png";
 import { logout } from "../../features/authSlice";
 import { useDispatch } from "react-redux";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import './Navbar.css'
+import "./Navbar.css";
 const Data = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen); 
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const handldeClick = () => {
-    dispatch(logout())
-      navigate('/') 
-      toast.success("Logout successfully");
-  
-  };
-  const token = sessionStorage.getItem("authToken")
-
-
-
+  const token = sessionStorage.getItem("authToken");
 
   function handleLogout() {
     dispatch(logout());
     setIsSidebarOpen(false);
-    toast.s("Logout successfull")
-    navigate('/');  // Redirect to homepage or login after logout
+    toast.success("Logout successfull");
+    navigate("/");
   }
 
   return (
@@ -36,19 +27,24 @@ const Data = () => {
       <div className="relative bg-gray-200">
         {/* Sidebar on the Right */}
         <div
-          className={`fixed top-0 right-0 h-full w-64 bg-gray-900 text-white p-4 transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
-            } transition-transform duration-300 ease-in-out`}
+          className={`fixed top-0 right-0 h-full w-64 bg-gray-900 text-white p-4 transform ${
+            isSidebarOpen ? "translate-x-0" : "translate-x-full"
+          } transition-transform duration-300 ease-in-out`}
         >
           <h2 className="text-2xl font-semibold mb-4">Profile Info</h2>
 
           <div className="sidebar-options flex flex-col items-start space-y-4">
-            <NavLink to="/profile">PROFILE</NavLink>
+            <a href="/profile">Profile</a>
             <button onClick={handleLogout}>LOGOUT</button>
-            <a href='/account' >Account Settings</a>
+            <a href="/account">Account Settings</a>
           </div>
         </div>
         {/* Main Content */}
-        <div className={`transition-all duration-300 ${isSidebarOpen ? 'mr-64' : 'mr-0'}`}>
+        <div
+          className={`transition-all duration-300 ${
+            isSidebarOpen ? "mr-64" : "mr-0"
+          }`}
+        >
           <div className="flex justify-between items-center p-4 bg-gray-800 shadow-md">
             {/* Logo and Title (Left-aligned) */}
             <div className="flex items-center justify-start w-full">
@@ -61,18 +57,38 @@ const Data = () => {
             {/* Home and About (Centered) */}
             <div className="flex justify-center w-full space-x-8">
               <button className="text-white text-lg hover:text-blue-500">
-                <NavLink to="/" className={({isActive})=> isActive ? "Active":""}>Home</NavLink>
+                <NavLink
+                  to="/"
+                  className={({ isActive }) => (isActive ? "Active" : "")}
+                >
+                  Home
+                </NavLink>
               </button>
               <button className="text-white text-lg hover:text-blue-500">
-                <NavLink to="/about" className={({isActive})=>isActive?"Active":""}>About</NavLink>
+                <NavLink
+                  to="/about"
+                  className={({ isActive }) => (isActive ? "Active" : "")}
+                >
+                  About
+                </NavLink>
               </button>
               {!token ? (
                 <>
                   <button className="text-white text-lg hover:text-blue-500">
-                    <NavLink to="/signup" className={({isActive})=>isActive?"Active":""}>Sign up</NavLink>
+                    <NavLink
+                      to="/signup"
+                      className={({ isActive }) => (isActive ? "Active" : "")}
+                    >
+                      Sign up
+                    </NavLink>
                   </button>
                   <button className="text-white text-lg hover:text-blue-500">
-                    <NavLink to="/login" className={({isActive})=>isActive?"Active":""}>Log in</NavLink>
+                    <NavLink
+                      to="/login"
+                      className={({ isActive }) => (isActive ? "Active" : "")}
+                    >
+                      Log in
+                    </NavLink>
                   </button>
                 </>
               ) : (
@@ -97,7 +113,7 @@ const Data = () => {
           </div>
         </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </>
   );
 };

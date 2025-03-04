@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserDetails } from "../../features/accountThunk";
 import { logout } from "../../features/authSlice";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Outlet } from "react-router-dom";
 
 const Profile = () => {
   const profileData = useSelector((state) => state.auth.userData);
@@ -598,6 +598,7 @@ const Profile = () => {
           </button>
         </div>
       </form>
+      <Outlet/>
       <ToastContainer/>
     </div>
   );
