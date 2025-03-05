@@ -1,22 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import img from "../../../assets/profile.png";
 import { logout } from "../../features/authSlice";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Icons for mobile menu
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 
 const Data = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State for mobile menu
-
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const sidebarRef = useRef(null);
 
   const token = sessionStorage.getItem("authToken");
 
+  // Toggle functions
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+    setIsMobileMenuOpen(false);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setIsSidebarOpen(false);
+  };
+
+  // Close sidebar if clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setIsSidebarOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Logout Function
   function handleLogout() {
     dispatch(logout());
     setIsSidebarOpen(false);
@@ -30,15 +51,22 @@ const Data = () => {
       <div className="relative bg-gray-200">
         {/* Sidebar */}
         <div
+          ref={sidebarRef}
           className={`fixed top-0 right-0 h-full w-64 bg-gray-900 text-white p-4 transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
-          } transition-transform duration-300 ease-in-out`}
+          } transition-transform duration-300 ease-in-out shadow-lg`}
         >
           <h2 className="text-2xl font-semibold mb-4">Profile Info</h2>
           <div className="sidebar-options flex flex-col items-start space-y-4">
-            <NavLink to="/profile">Profile</NavLink>
-            <NavLink to="/dashboard">User Dashboard</NavLink>
-            <NavLink to="/account">Account Settings</NavLink>
+            <a href="/profile" onClick={toggleSidebar}>
+              Profile
+            </a>
+            <a href="/dashboard" onClick={toggleSidebar}>
+              User Dashboard
+            </a>
+            <a href="/account" onClick={toggleSidebar}>
+              Account Settings
+            </a>
             <button onClick={handleLogout}>Logout</button>
           </div>
         </div>
@@ -58,24 +86,15 @@ const Data = () => {
             <NavLink to="/" className="text-white text-lg hover:text-blue-500">
               Home
             </NavLink>
-            <NavLink
-              to="/about"
-              className="text-white text-lg hover:text-blue-500"
-            >
+            <NavLink to="/about" className="text-white text-lg hover:text-blue-500">
               About
             </NavLink>
             {!token ? (
               <>
-                <NavLink
-                  to="/signup"
-                  className="text-white text-lg hover:text-blue-500"
-                >
+                <NavLink to="/signup" className="text-white text-lg hover:text-blue-500">
                   Sign up
                 </NavLink>
-                <NavLink
-                  to="/login"
-                  className="text-white text-lg hover:text-blue-500"
-                >
+                <NavLink to="/login" className="text-white text-lg hover:text-blue-500">
                   Log in
                 </NavLink>
               </>
@@ -83,26 +102,23 @@ const Data = () => {
               <img
                 src={img}
                 alt="Profile"
-                onClick={toggleMobileMenu}
+                onClick={toggleSidebar}
                 className="w-12 h-12 rounded-full border-2 border-white cursor-pointer hover:opacity-80 transition duration-300"
               />
-            ) }
+            )}
           </div>
 
-          {/* Mobile Menu Icon (Hamburger or Profile Image) */}
+          {/* Mobile Menu Icon */}
           <div className="md:hidden flex items-center">
-            {token ?  (
+            {token ? (
               <img
                 src={img}
                 alt="Profile"
-                onClick={toggleMobileMenu}
+                onClick={toggleSidebar}
                 className="w-12 h-12 rounded-full border-2 border-white cursor-pointer hover:opacity-80 transition duration-300"
               />
-            ): (
-              <AiOutlineMenu
-                className="text-white text-3xl cursor-pointer"
-                onClick={toggleMobileMenu}
-              />
+            ) : (
+              <AiOutlineMenu className="text-white text-3xl cursor-pointer" onClick={toggleMobileMenu} />
             )}
           </div>
         </div>
@@ -110,10 +126,7 @@ const Data = () => {
         {/* Mobile Dropdown Menu */}
         {isMobileMenuOpen && (
           <div className="absolute top-16 right-4 bg-gray-900 text-white rounded-md p-4 shadow-lg w-48 md:hidden">
-            <AiOutlineClose
-              className="text-white text-2xl cursor-pointer absolute top-2 right-2"
-              onClick={toggleMobileMenu}
-            />
+            <AiOutlineClose className="text-white text-2xl cursor-pointer absolute top-2 right-2" onClick={toggleMobileMenu} />
             <div className="flex flex-col space-y-4">
               <NavLink to="/" onClick={toggleMobileMenu}>
                 Home
@@ -121,10 +134,20 @@ const Data = () => {
               <NavLink to="/about" onClick={toggleMobileMenu}>
                 About
               </NavLink>
-               <a href="/profile">User Profile</a>
-               <a href="/dashboard">User Dashboard</a>
-               <a href="/account">Account Setting</a>
-              {!token ? (
+              {token ? (
+                <>
+                  <NavLink to="/profile" onClick={toggleMobileMenu}>
+                    User Profile
+                  </NavLink>
+                  <NavLink to="/dashboard" onClick={toggleMobileMenu}>
+                    User Dashboard
+                  </NavLink>
+                  <NavLink to="/account" onClick={toggleMobileMenu}>
+                    Account Settings
+                  </NavLink>
+                  <button onClick={handleLogout}>Logout</button>
+                </>
+              ) : (
                 <>
                   <NavLink to="/signup" onClick={toggleMobileMenu}>
                     Sign up
@@ -133,10 +156,6 @@ const Data = () => {
                     Log in
                   </NavLink>
                 </>
-              ) : (
-                 <>
-                <button onClick={handleLogout}>Logout</button>
-               </>
               )}
             </div>
           </div>
