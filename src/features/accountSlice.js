@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { changePassword, changeUserName, filledForms, recommendedForm, savedForms } from "./accountThunk";
+import { changePassword, changeUserName, filledForms, recommendedForm, savedForms, updateUserDetails } from "./accountThunk";
 
 const accountSlice = createSlice({
   name: "account",
@@ -104,7 +104,22 @@ const accountSlice = createSlice({
         state.status = "rejected"
         state.error = action.payload
       })
-
+      
+       .addCase(updateUserDetails.pending, (state) => {
+        state.loading = true
+        state.status = "pending"
+        state.error = null
+      }).addCase(updateUserDetails.fulfilled, (state,action) => {
+        state.loading = false;
+        state.status = "fulfilled"
+        state.FilledForms=action.payload;
+    
+        state.error = null
+      }).addCase(updateUserDetails.rejected, (state, action) => {
+        state.loading = false
+        state.status = "rejected"
+        state.error = action.payload
+      })
       
 
       
