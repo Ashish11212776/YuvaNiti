@@ -10,7 +10,7 @@ import AccountSettings from "./Components/AccountSettings";
 
 
 function App() {
-  return (
+  return ( 
     <>
      <Routes>
       <Route path='/' element={<Home/>}/>

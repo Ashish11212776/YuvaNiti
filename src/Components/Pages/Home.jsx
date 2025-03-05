@@ -7,33 +7,38 @@ import giff from '../../../assets/lo.gif';
 const Home = () => {
   const dispatch = useDispatch();
  
- 
-  const { data,error,loading} = useSelector((state) => state.app);
+  const { data, error, loading } = useSelector((state) => state.app);
  
   useEffect(() => {
-    dispatch(getAllData())
-  }, []); 
+    dispatch(getAllData());
+  }, [dispatch]);
 
   return (
     <div className="min-h-screen bg-gray-100 py-6">
-      <h1 className="text-black-200 text-center text-3xl">SERVICES</h1>
-      <p className="text-center font-medium underline">Discover jobs across popular roles</p>
+    <div className="text-center mb-8 border-b-3 border-gray-300 pb-2">
+        <h1 className="text-4xl font-extrabold text-blue-700 transition-transform transform hover:scale-105 hover:text-blue-500 duration-300">
+          SERVICES
+        </h1>
+        <p className="text-xl font-medium text-gray-500 mt-2 hover:text-blue-400 hover:underline-offset-4 transition-all duration-300">
+          Discover jobs across popular roles
+        </p>
+      </div>
+   
+
       <br />
       <div className="container mx-auto px-4">
         {/* Error Handling */}
         {error ? (
-          
           <div className="text-red-600 text-center text-xl">Something Went Wrong!!</div>
         ) : loading ? ( // Handle loading state
           <div className="mt-20 text-center">
             <center><img src={loa} alt="Loading" /></center>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {data?.map((item, index) => (
-              <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden p-4">
+              <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden p-6 bg-gray-50 hover:bg-gray-100 transition-all">
                 {/* Title Section */}
-                {console.log(data)}
                 <div className="text-center mb-6">
                   <h1 className="text-3xl font-bold text-gray-800 hover:text-blue-600 transition-colors duration-300">
                     {item?.name}
@@ -51,7 +56,7 @@ const Home = () => {
                   ))
                 ) : (
                   <div className="bg-white shadow-md rounded-lg p-4 mb-4 hover:shadow-2xl hover:bg-gray-50 transition-all">
-                    <center><img src={giff} alt="Loading" className="w-16 h-16" /></center>
+                    <center><img src={giff} alt="No Products" className="w-16 h-16" /></center>
                   </div>
                 )}
               </div>

@@ -22,7 +22,7 @@ const authSlice = createSlice({
       localStorage.clear()
       sessionStorage.clear()
       state.isAuthenticated = false;
-      toast("logout Successful")
+      
       
     },
   },    
