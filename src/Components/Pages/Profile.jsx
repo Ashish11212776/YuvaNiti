@@ -148,9 +148,9 @@ const Profile = () => {
     dispatch(updateUserDetails({ data, userId }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          toast.success("profile update");
           dispatch(getProfile({ userId }));
           navigate("/");
+          toast.success("profile update");
         }
       })
       .catch(() => {
@@ -177,7 +177,7 @@ const Profile = () => {
 </div>
 
       <form onSubmit={handleSubmit}>
-        <h1 className="text-3xl font-semibold text-blue-700 mb-8 pb-2 border-b-2 border-blue-200">
+        <h1 className="text-3xl font-semibold text-gray-600 mb-8 pb-2 border-b-2 border-blue-200">
           Personal Information
         </h1>
 
@@ -254,7 +254,7 @@ const Profile = () => {
               placeholder="Aadhaar number"
               value={formValues.adharNumber}
               onChange={handleInputChange}
-              className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
+              className="p-3 w-full border border-blue-200 rounded-md shadow-sm  focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white focus:outline-none"
               required
             />
           </div>
@@ -359,17 +359,8 @@ const Profile = () => {
               placeholder="DD-MM-YYYY"
               value={formValues.categoryIssueDate}
               onChange={handleDateChange}
-              onBlur={(e) => blurValidation(e)}
-              className={`p-3 w-full border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white 
-                  ${
-                    errors.categoryIssueDate
-                      ? "border-red-500"
-                      : "border-blue-200"
-                  }`}
+              className={`p-3 w-full border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white`}
             />
-            <p className="text-red-500 text-sm mt-2">
-              {errors.categoryIssueDate}
-            </p>
           </div>
 
           <div>
@@ -676,7 +667,7 @@ const Profile = () => {
         <div className="mt-8">
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 font-medium text-lg shadow-md"
+            className="w-52 bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-8 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 font-medium text-lg shadow-md"
           >
             SAVE
           </button>
@@ -688,4 +679,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Profile;    
