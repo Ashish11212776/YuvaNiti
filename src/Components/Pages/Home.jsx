@@ -18,10 +18,15 @@ const Home = () => {
     <>
       {status ? (
         <div className="min-h-screen bg-gray-100 py-6">
-          <h1 className="text-black-200 text-center text-3xl">SERVICES</h1>
-          <p className="text-center font-medium underline">
-            Discover jobs across popular roles
-          </p>
+
+       <div className="min-h-[30px] w-[50%] bg-slate-200 flex justify-center items-center rounded-xl shadow-md 
+              mx-auto mt-10 mb-8">
+  <h1 className="text-black text-2xl font-bold">SERVICES</h1>
+  
+</div>
+
+         
+       
           <br />
           <div className="container mx-auto px-4">
             {/* Error Handling */}

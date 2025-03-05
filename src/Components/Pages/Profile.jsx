@@ -157,9 +157,9 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-lg border border-blue-100">
+    <div className="max-w-6xl mx-auto p-8 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-lg border border-y-blue-50 mt-4 mb-4">
       <form onSubmit={handleSubmit}>
-        <h1 className="text-3xl font-semibold text-blue-700 mb-8 pb-2 border-b-2 border-blue-200">
+        <h1 className="text-3xl font-semibold text-gray-600 mb-8 pb-2 border-b-2 border-blue-200">
           Personal Information
         </h1>
 
@@ -237,7 +237,7 @@ const Profile = () => {
               placeholder="Aadhaar number"
               value={formValues.adharNumber}
               onChange={handleInputChange}
-              className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
+              className="p-3 w-full border border-blue-200 rounded-md shadow-sm  focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white focus:outline-none"
               required
             />
           </div>
@@ -659,7 +659,7 @@ const Profile = () => {
         <div className="mt-8">
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 font-medium text-lg shadow-md"
+            className="w-52 bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-8 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 font-medium text-lg shadow-md"
           >
             SAVE
           </button>
@@ -671,4 +671,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Profile;    
