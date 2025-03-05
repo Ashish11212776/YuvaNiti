@@ -75,7 +75,7 @@ const UserSignUp = () => {
   const handleVerifyOTP = () => {
     dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        toast("User login Successfully !!!!!");
+        toast("User signup Successfully !");
         const userId = res.payload.data.userDetails.id
         dispatch(getProfile({ userId }))
         setisOtpSend(false);
@@ -87,52 +87,51 @@ const UserSignUp = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row m-6 p-4 w-full md:w-[90%] lg:w-[80%] min-h-screen font-roboto mx-auto  bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-6 font-roboto">
+      <div className="w-full max-w-4xl bg-white shadow-2xl rounded-3xl overflow-hidden grid md:grid-cols-2 border-4 border-blue-50">
       {/* Left Section */}
-      <div className="hidden md:flex flex-col justify-center items-start w-1/2 gap-6 p-8 rounded-lg h-1/2 shadow-slate-300 bg-gray-100">
-        <h2 className="font-bold text-3xl mb-4 text-gray-800">
-          New to Yuva Niti?
-        </h2>
-
-        <div className="space-y-4 w-full">
-          <p className="flex items-center gap-3 text-gray-700">
-            <MdCheck className="h-5 w-5 text-blue-400 flex-shrink-0" /> Apply
-            Govt form in simple click
-          </p>
-          <p className="flex items-center gap-3 text-gray-700">
-            <MdCheck className="h-5 w-5 text-blue-400 flex-shrink-0" /> Get
-            Notifications
-          </p>
-          <p className="flex items-center gap-3 text-gray-700">
-            <MdCheck className="h-5 w-5 text-blue-400 flex-shrink-0" /> Read
-            Govt Schemes
-          </p>
-        </div>
-
-        <button
-          className="w-full text-blue-600 border-2 border-blue-600 py-3 rounded-md hover:bg-blue-50 transition-all duration-300 font-medium"
-          onClick={() => navigate("/login")}
-        >
-          Already have Account
-        </button>
-
-        <div className="mt-6 w-full flex justify-center">
-          <img
-            src={login}
-            alt="Login illustration"
-            className="object-contain max-w-[360px] w-full"
-          />
-        </div>
-      </div>
+      <div className="hidden md:flex flex-col justify-center items-start w-full gap-6 p-10 bg-gradient-to-br from-blue-500 to-blue-700 text-white relative overflow-hidden">
+                  <div className="absolute inset-0 bg-pattern opacity-20"></div>
+                  
+                  <h2 className="font-bold text-4xl mb-4 z-10 relative">New to Yuva Niti?</h2>
+                  <div className="space-y-5 w-full z-10">
+                      {[
+                          "Apply Govt form in simple click",
+                          "Get Notifications", 
+                          "Read Govt Schemes"
+                      ].map((feature, index) => (
+                          <p 
+                              key={index} 
+                              className="flex items-center gap-4 transform transition-transform hover:translate-x-2 duration-300"
+                          >
+                              <MdCheck className="h-6 w-6 text-white flex-shrink-0 bg-blue-400 rounded-full p-1" />
+                              <span className="text-lg">{feature}</span>
+                          </p>
+                      ))}
+                  </div>
+                  <button 
+                      className="w-1/2 text-blue-600 bg-white font-bold flex items-center justify-center py-3 rounded-full hover:bg-blue-50 transition-all duration-300 z-10"
+                      onClick={() => navigate("/login")}
+                  >
+                      Login
+                  </button>
+      
+                  <div className="mt-6 w-full flex justify-center z-10">
+                      <img 
+                          src={login} 
+                          alt="Login illustration" 
+                          className="object-contain max-w-[360px] w-full transform hover:scale-105 transition-transform duration-300" 
+                      />
+                  </div>
+              </div>
 
       {/* Right Section */}
-      <div className="flex flex-col justify-top mt-52 w-full md:w-1/2 bg-white shadow-slate-300 h-1/2 p-8 rounded-lg shadow-sm">
-        <h1 className="mb-10 text-left text-3xl text-gray-900">
-          Register User
-        </h1>
+      <div className="w-full flex flex-col justify-center items-start bg-white rounded-lg p-8 md:p-12">
+      <h2 className="text-4xl font-bold text-blue-900 text-center w-full mb-2">Welcome Back</h2>
+      <p className="text-gray-500 text-center mb-8 w-full text-sm">Plan your future with ease</p>
         {!isOtpSend ? (
           <>
-            <label className="text-xl font-medium mb-1 text-left block text-gray-300">
+            <label className="text-sm font-medium mb-2 block text-gray-700">
               Mobile Number
             </label>
             <input
@@ -190,6 +189,21 @@ const UserSignUp = () => {
         )}
       </div>
       <ToastContainer />
+    </div>
+    <style jsx>{`
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+                linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+    `}</style>
     </div>
   );
 };

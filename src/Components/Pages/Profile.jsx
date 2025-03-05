@@ -3,15 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserDetails } from "../../features/accountThunk";
 import { logout } from "../../features/authSlice";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate,Outlet } from "react-router-dom";
-
+import { useNavigate, Outlet } from "react-router-dom";
+import { FaMobileAlt } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 const Profile = () => {
   const profileData = useSelector((state) => state.auth.userData);
   const { id } = useSelector((state) => state.auth.profile.data.userDetails);
   const navigate = useNavigate();
   const userId = id;
   const dispatch = useDispatch();
-  
+
   const [formValues, setFormValues] = useState({
     firstName: "",
     lastName: "",
@@ -68,44 +69,44 @@ const Profile = () => {
       });
     }
   }, [profileData]);
-  
-  
+
+
   const patterns = {
-    
-    
+
+
     firstName: /^[a-zA-Z\s]{1,50}$/,
-    lastName: /^[a-zA-Z\s]{1,50}$/, 
-    fathersName: /^[a-zA-Z\s]{1,50}$/, 
-    mothersName: /^[a-zA-Z\s]{1,50}$/, 
+    lastName: /^[a-zA-Z\s]{1,50}$/,
+    fathersName: /^[a-zA-Z\s]{1,50}$/,
+    mothersName: /^[a-zA-Z\s]{1,50}$/,
     dob: /^(\d{0,2})?-?(\d{0,2})?-?(\d{0,4})?$/,
-    otherCategoryDateOfIssue: /^(\d{0,2})?-?(\d{0,2})?-?(\d{0,4})?$/, 
-    otherCategoryValidUpto: /^(\d{0,2})?-?(\d{0,2})?-?(\d{0,4})?$/ 
+    otherCategoryDateOfIssue: /^(\d{0,2})?-?(\d{0,2})?-?(\d{0,4})?$/,
+    otherCategoryValidUpto: /^(\d{0,2})?-?(\d{0,2})?-?(\d{0,4})?$/
   };
-  
-  
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-  
-   
+
+
     if (patterns[name]) {
-      if (value === "" || patterns[name].test(value)) { 
-       
+      if (value === "" || patterns[name].test(value)) {
+
         setFormValues((prevValues) => ({
           ...prevValues,
-          [name]: value, 
+          [name]: value,
         }));
       } else {
         console.warn(`Invalid input for ${name}: ${value}`);
       }
     } else {
-  
+
       setFormValues((prevValues) => ({
         ...prevValues,
         [name]: value.trim(),
       }));
     }
   };
-  
+
 
 
   const handleSelectChange = (e) => {
@@ -115,7 +116,7 @@ const Profile = () => {
       [name]: value,
     });
   };
- 
+
   const handleDateChange = (e) => {
     const { name, value } = e.target;
     setFormValues({
@@ -151,11 +152,25 @@ const Profile = () => {
         toast.error("details not update");
       });
   };
-  // Add this function to your component alongside your other handlers
-
-
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-lg border border-blue-100">
+    <div className="max-w-4xl mx-auto p-8 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-lg border border-blue-100 m-2">
+      <div className=" bg-[#c5cbd8] shadow-lg rounded-2xl p-4 h-[40px] flex items-center justify-between mb-4">
+  <p className="text-lg font-semibold ">{profileData?.fullName}</p>
+  
+  <div className="flex items-center gap-2 text-gray-600">
+    <FaMobileAlt />
+    <span>{profileData?.mobileNumber}</span>
+  </div>
+  
+  <div className="flex items-center gap-2 text-gray-600">
+    <FaUser />
+    <span>{profileData?.gender}</span>
+  </div>
+</div>
+<div className=" h-1">
+
+</div>
+
       <form onSubmit={handleSubmit}>
         <h1 className="text-3xl font-semibold text-blue-700 mb-8 pb-2 border-b-2 border-blue-200">
           Personal Information
@@ -174,11 +189,9 @@ const Profile = () => {
               className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
               value={formValues.firstName}
               onChange={handleInputChange}
-            
               required
             />
           </div>
-
           <div>
             <label className="block text-blue-800 font-medium mb-1">
               Last Name <span className="text-red-500 font-bold">*</span>
@@ -190,7 +203,7 @@ const Profile = () => {
               value={formValues.lastName}
               className="p-3 w-full border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white"
               onChange={handleInputChange}
-              
+
               required
             />
           </div>
@@ -634,8 +647,8 @@ const Profile = () => {
           </button>
         </div>
       </form>
-      <Outlet/>
-      <ToastContainer/>
+      <Outlet />
+      <ToastContainer />
     </div>
   );
 };
