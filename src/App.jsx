@@ -9,7 +9,6 @@ import AccountSettings from "./Components/AccountSettings";
 import PrivateRoutes from "./components/PrivateRoutes";
 import PageNotFound from "./components/Pages/PageNotFound";
 import DashBoard from "./components/Pages/DashBoard";
-
 function App() {
   return (
     <>
@@ -28,5 +27,4 @@ function App() {
     </>
   );
 }
-
 export default App;

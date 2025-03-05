@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserDetails } from "../../features/accountThunk";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate, Outlet } from "react-router-dom";
+import { FaMobileAlt } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { getProfile } from "../../features/authThunk";
 
 const Profile = () => {
@@ -146,18 +148,34 @@ const Profile = () => {
     dispatch(updateUserDetails({ data, userId }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          toast.success("profile update");
           dispatch(getProfile({ userId }));
           navigate("/");
+          toast.success("profile update");
         }
       })
       .catch(() => {
         toast.error(error?.message);
       });
   };
-
   return (
-    <div className="max-w-6xl mx-auto p-8 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-lg border border-y-blue-50 mt-4 mb-4">
+    <div className="max-w-4xl mx-auto p-8 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-lg border border-blue-100 m-2">
+      <div className=" bg-[#c5cbd8] shadow-lg rounded-2xl p-4 h-[40px] flex items-center justify-between mb-4">
+  <p className="text-lg font-semibold ">{profileData?.fullName}</p>
+  
+  <div className="flex items-center gap-2 text-gray-600">
+    <FaMobileAlt />
+    <span>{profileData?.mobileNumber}</span>
+  </div>
+  
+  <div className="flex items-center gap-2 text-gray-600">
+    <FaUser />
+    <span>{profileData?.gender}</span>
+  </div>
+</div>
+<div className=" h-1">
+
+</div>
+
       <form onSubmit={handleSubmit}>
         <h1 className="text-3xl font-semibold text-gray-600 mb-8 pb-2 border-b-2 border-blue-200">
           Personal Information
@@ -179,7 +197,6 @@ const Profile = () => {
               required
             />
           </div>
-
           <div>
             <label className="block text-blue-800 font-medium mb-1">
               Last Name <span className="text-red-500 font-bold">*</span>
@@ -342,17 +359,8 @@ const Profile = () => {
               placeholder="DD-MM-YYYY"
               value={formValues.categoryIssueDate}
               onChange={handleDateChange}
-              onBlur={(e) => blurValidation(e)}
-              className={`p-3 w-full border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white 
-                  ${
-                    errors.categoryIssueDate
-                      ? "border-red-500"
-                      : "border-blue-200"
-                  }`}
+              className={`p-3 w-full border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white`}
             />
-            <p className="text-red-500 text-sm mt-2">
-              {errors.categoryIssueDate}
-            </p>
           </div>
 
           <div>
