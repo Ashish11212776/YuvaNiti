@@ -4,7 +4,7 @@ import { getAllData } from "../../features/dataThunks";
 import loa from "../../../assets/loo.gif";
 import giff from "../../../assets/lo.gif";
 import StatusReject from "./StatusReject";
-import Hero from "./Hero";
+
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -32,8 +32,7 @@ const Home = () => {
 
   return (
     <>
-     <Hero/>
-     
+    
     <div className="min-h-screen bg-gray-100 py-6">
       <div className="min-h-[30px] w-[50%] bg-slate-200 flex justify-center items-center rounded-xl shadow-md mx-auto mt-10 mb-8">
         <h1 className="text-black text-2xl font-bold">SERVICES</h1>

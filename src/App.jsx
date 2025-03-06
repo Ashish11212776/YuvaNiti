@@ -9,11 +9,15 @@ import AccountSettings from "./components/AccountSettings";
 import PrivateRoutes from "./components/PrivateRoutes";
 import PageNotFound from "./components/Pages/PageNotFound";
 import DashBoard from "./components/Pages/DashBoard";
+import Hero from "./components/Pages/Hero";
 function App() {
   return ( 
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={
+          <div>
+           <Hero/> <Home /> </div>
+     } />
         <Route path="/about" element={<About />} />
         <Route path="/signup" element={<UserSignUp />} />
         <Route path="/login" element={<LoginPage />} />
