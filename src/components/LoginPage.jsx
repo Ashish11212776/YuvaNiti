@@ -15,7 +15,6 @@ import { MdCheck } from "react-icons/md";
 import login from "../../public/login.png";
 import { FiLogIn } from "react-icons/fi";
 import StatusReject from "./Pages/StatusReject";
-
 const LoginPage = () => {
     const [mobileNumber, setMobileNumber] = useState("");
     const [otpEntered, setOTP] = useState("");
@@ -23,7 +22,6 @@ const LoginPage = () => {
     const [captcha, setCaptcha] = useState("");
     const [generatedCaptcha, setGeneratedCaptcha] = useState("");
     const [isLoginWithPassword, setIsLoginWithPassword] = useState(false);
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isOTPSent, loading, error, status } = useSelector((state) => state.auth);
@@ -45,7 +43,6 @@ const LoginPage = () => {
             toast.warning("Invalid credentials");
         }
     };
-
     const handleVerifyOTP = () => {
         dispatch(verifyOTP({ mobileNumber, otpEntered })).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
@@ -63,6 +60,8 @@ const LoginPage = () => {
         if (captcha === generatedCaptcha) {
             dispatch(loginWithPassword({ mobileNumber, password })).then((res) => {
                 if (res.meta.requestStatus === "fulfilled") {
+                    const userId = res.payload.data.userDetails.id;
+                    dispatch(getProfile({ userId }));
                     toast("Login Successfully done !!!!");
                     navigate("/");
                 } else if (res.meta.requestStatus === "rejected") {
@@ -73,12 +72,10 @@ const LoginPage = () => {
             alert("Captcha is incorrect");
         }
     };
-
     const isFormValid =
         mobileNumber.length === 10 &&
         captcha.length >= 6 &&
         captcha === generatedCaptcha;
-
     return (
         <>{status ?
             <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-6 font-roboto">
@@ -228,7 +225,7 @@ const LoginPage = () => {
                         )}
                     </div>
                 </div>
-                <ToastContainer />
+                <ToastContainer closeButton={true} />
 
                 {/* Background Pattern */}
                 <style jsx>{`

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 const ChangePassword = () => {
-  const { id } = useSelector((state) => state.auth?.profile?.data?.userDetails);
+  const  id  = useSelector((state) => state?.auth?.profile?.data?.userDetails?.id);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
@@ -64,7 +64,7 @@ const ChangePassword = () => {
           position: "top-right",
           autoClose: 3000
         });
-        navigate("/account");
+        
         setChange(!change);
       }
     });
@@ -240,7 +240,7 @@ const ChangePassword = () => {
           </div>
         </div>
       )}
-      <ToastContainer />
+      <ToastContainer  />
     </div>
   );
 };
