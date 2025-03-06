@@ -1,11 +1,11 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import Profile from "./Components/Pages/Profile";
-import About from "./Components/Pages/About";
-import Home from "./Components/Pages/Home";
-import UserSignUp from "./Components/UserSignup";
-import LoginPage from "./Components/LoginPage";
-import AccountSettings from "./Components/AccountSettings";
+import Profile from "./components/Pages/Profile";
+import About from "./components/Pages/About";
+import Home from "./components/Pages/Home";
+import UserSignUp from "./components/UserSignup"
+import LoginPage from "./components/LoginPage";
+import AccountSettings from "./components/AccountSettings";
 import PrivateRoutes from "./components/PrivateRoutes";
 import PageNotFound from "./components/Pages/PageNotFound";
 import DashBoard from "./components/Pages/DashBoard";
