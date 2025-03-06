@@ -52,7 +52,7 @@ const Data = () => {
         {/* Sidebar */}
         <div
           ref={sidebarRef}
-          className={`fixed top-0 right-0 h-full w-64 bg-gray-900 text-white p-4 transform ${
+          className={`fixed top-0 z-10 right-0 h-full w-64 bg-gray-900 text-white p-4 transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           } transition-transform duration-300 ease-in-out shadow-lg`}
         >
@@ -74,15 +74,15 @@ const Data = () => {
         {/* Navbar */}
         <div className="flex justify-between items-center p-4 bg-gray-800 shadow-md">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center cursor-pointer" onClick={() => navigate("/")}>
             <h2 className="text-white text-4xl p-2 border-2 rounded-full text-left font-bold uppercase tracking-wide shadow-lg">
               YN
             </h2>
             <h1 className="text-3xl font-bold text-white ml-4">YuvaNeeti</h1>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          {/* Desktop Navigation (Shifts left when sidebar opens) */}
+          <div className={`hidden md:flex space-x-8 transition-all duration-300 ${isSidebarOpen ? "md:mr-64" : ""}`}>
             <NavLink to="/" className="text-white text-lg hover:text-blue-500">
               Home
             </NavLink>
@@ -125,7 +125,7 @@ const Data = () => {
 
         {/* Mobile Dropdown Menu */}
         {isMobileMenuOpen && (
-          <div className="absolute top-16 right-4 bg-gray-900 text-white rounded-md p-4 shadow-lg w-48 md:hidden">
+          <div className="z-10 absolute top-16 right-4 bg-gray-900 text-white rounded-md p-4 shadow-lg w-48 md:hidden">
             <AiOutlineClose className="text-white text-2xl cursor-pointer absolute top-2 right-2" onClick={toggleMobileMenu} />
             <div className="flex flex-col space-y-4">
               <NavLink to="/" onClick={toggleMobileMenu}>
@@ -162,9 +162,9 @@ const Data = () => {
         )}
       </div>
 
-      <ToastContainer />
+      <ToastContainer closeButton={true} />
     </>
   );
 };
 
-export default Data;
+export default Data
