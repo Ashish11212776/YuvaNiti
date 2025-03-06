@@ -4,16 +4,18 @@ import { changeUserName } from '../features/accountThunk';
 import { useNavigate } from 'react-router-dom';
 import { getProfile } from '../features/authThunk';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 import { CiUser } from "react-icons/ci";
 import { LuUserRoundPen } from "react-icons/lu";
 
 
 
 const ChangeUsername = () => {
-  const { id } = useSelector((state) => state.auth.profile.data.userDetails);
-  const username = useSelector((state) => state.auth.userData.username);
-  const userId = id;
+  const  userId  = useSelector((state) => state?.auth?.profile?.data?.userDetails?.id);
+  console.log(userId);
+  
+  const username = useSelector((state) => state?.auth?.userData?.username);
+ 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [userName, setUserName] = useState(username);
@@ -22,19 +24,27 @@ const ChangeUsername = () => {
   const changeUserNameHandler = () => {
     dispatch(changeUserName({ userName, userId })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
+        console.log("hello");
+        
         dispatch(getProfile({ userId }));
-        toast.success("User Name Changed Successfully");
-        navigate("/");
+        
+        toast.success("User Name Changed", {
+          toastId: "username-change-success",
+          autoClose: 3000,
+        });
+        toast.dismiss()
         setChange(!change);
       }
     }).catch(() => {
       toast.error("Failed to change username.");
     });
+ 
   };
     return (
       
     <div className="p-6 max-w-lg mx-auto flex flex-col item-start text-slate-500 font-roboto">
       <h2 className="text-2xl font-bold mb-6 text-blue-600 flex items-start gap-3 justify-start"><CiUser className=' h-8'/>Account Settings</h2>
+      
       {!change ? (
         <div>
           <div className="mb-6">
@@ -75,7 +85,7 @@ const ChangeUsername = () => {
             Cancel
             </button>
             <button
-              onClick={() => changeUserNameHandler()}
+              onClick={changeUserNameHandler}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
             >
               Confirm

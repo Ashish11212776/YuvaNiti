@@ -29,7 +29,7 @@ const accountSlice = createSlice({
         state.loading = false
         // state.userData = action.payload.data
         state.status = "fulfilled"
-
+ 
         state.error = null
 
       })
