@@ -67,6 +67,9 @@ const ChangePassword = () => {
         
         setChange(!change);
       }
+      else{
+        toast.error(res?.payload?.message)
+      }
     });
   };
 

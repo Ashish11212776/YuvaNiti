@@ -1,0 +1,23 @@
+.Active{
+    color: #fff; /* Change text color when active */
+  background-color: #007bff; /* Highlight background when active */
+  border-radius: 5px;
+  padding : 7px;
+}
+@keyframes charAnim {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: charAnim 2s ease forwards infinite;
+}
