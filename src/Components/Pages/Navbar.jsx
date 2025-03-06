@@ -45,7 +45,7 @@ const Data = () => {
     toast.success("Logout successful");
     navigate("/");
   }
-
+  
   return (
     <>
       <div className="relative bg-gray-200">
