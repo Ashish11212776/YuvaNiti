@@ -215,7 +215,7 @@ const Profile = () => {
           {/* Parents Names - Row 2 */}
           <div>
             <label className="block text-blue-800 font-medium mb-1">
-              Father's Name <span className="text-red-500 font-bold">*</span>
+              {"Father's Name"} <span className="text-red-500 font-bold">*</span>
             </label>
             <input
               type="text"
@@ -230,7 +230,7 @@ const Profile = () => {
 
           <div>
             <label className="block text-blue-800 font-medium mb-1">
-              Mother's Name <span className="text-red-500 font-bold">*</span>
+             {" Mother's Name"} <span className="text-red-500 font-bold">*</span>
             </label>
             <input
               type="text"
