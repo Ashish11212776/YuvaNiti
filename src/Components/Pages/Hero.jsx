@@ -3,7 +3,7 @@ import React from 'react'
 import img from "../../../assets/background.jpg"
 const Hero = () => {
   return (
-    <div className="relative h-screen bg-cover bg-center h-[40vh] border-2">
+    <div className="relative z-0 h-screen bg-cover bg-center h-[35vh] border-2">
 
 <img 
 src={img}

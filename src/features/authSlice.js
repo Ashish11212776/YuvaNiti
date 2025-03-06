@@ -1,10 +1,6 @@
-
 import { createSlice } from "@reduxjs/toolkit";
 
 import { sendOTP, verifyOTP, loginWithPassword, getProfile } from "./authThunk";
-import { toast } from "react-toastify";
-
-
 
 const authSlice = createSlice({
   name: "auth",
@@ -15,87 +11,88 @@ const authSlice = createSlice({
     isAuthenticated: false,
     loading: false,
     error: null,
-    status:"pending"
+    status: "pending",
   },
   reducers: {
     logout: (state) => {
-      localStorage.clear()
-      sessionStorage.clear()
+      localStorage.clear();
+      sessionStorage.clear();
       state.isAuthenticated = false;
-      
-      
     },
-  },    
+  },
   extraReducers: (builder) => {
-    builder  
-    /*{Send Otp}*/ 
+    builder
+      /*{Send Otp}*/
+
       .addCase(sendOTP.pending, (state) => {
         state.loading = true;
-        state.status="pending"
+        state.status = "pending";
         state.error = null;
       })
       .addCase(sendOTP.fulfilled, (state) => {
         state.loading = false;
-        state.status="fulfilled"
+        state.status = "fulfilled";
         state.isOTPSent = true;
       })
       .addCase(sendOTP.rejected, (state, action) => {
         state.loading = false;
-        state.status="rejected"
+        state.status = "rejected";
         state.error = action.payload;
-      }) 
-      /*{verify Otp}*/ 
+      })
+      /*{verify Otp}*/
+
       .addCase(verifyOTP.pending, (state) => {
         state.loading = true;
-        state.status="pending"
+        state.status = "pending";
         state.error = null;
       })
       .addCase(verifyOTP.fulfilled, (state, action) => {
         state.loading = false;
-        state.status="fulfilled"
-        state.profile = action.payload
-         state.isAuthenticated = true;
-         
-         
+        state.status = "fulfilled";
+        state.profile = action.payload;
+        state.isAuthenticated = true;
       })
       .addCase(verifyOTP.rejected, (state, action) => {
         state.loading = false;
-         state.status="rejected"
+        state.status = "rejected";
         state.error = action.payload;
       })
-      /*{Login WIth Password}*/ 
+      /*{Login WIth Password}*/
+
       .addCase(loginWithPassword.pending, (state) => {
         state.loading = true;
-        state.status="pending"
+        state.status = "pending";
         state.error = null;
-
-      }).addCase(loginWithPassword.fulfilled, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = true
-        state.status="fulfilled"
-        state.profile = action.payload
-      }).addCase(loginWithPassword.rejected, (state, action) => {
-        state.loading = false;
-         state.status="rejected"
-        state.error = action.payload
       })
-      /*{Get Profile}*/ 
+      .addCase(loginWithPassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+        state.status = "fulfilled";
+        state.profile = action.payload;
+      })
+      .addCase(loginWithPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.status = "rejected";
+        state.error = action.payload;
+      })
+      /*{Get Profile}*/
+
       .addCase(getProfile.pending, (state) => {
         state.loading = true;
-        state.status="pending"
+        state.status = "pending";
         state.error = null;
-      }).addCase(getProfile.fulfilled, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = true
-        state.status="fulfilled"
-        state.profile = action.payload
-
-      }).addCase(getProfile.rejected, (state, action) => {
-        state.loading = false;
-         state.status="rejected"
-        state.error = action.payload
       })
-
+      .addCase(getProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+        state.status = "fulfilled";
+        state.profile = action.payload;
+      })
+      .addCase(getProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.status = "rejected";
+        state.error = action.payload;
+      });
   },
 });
 

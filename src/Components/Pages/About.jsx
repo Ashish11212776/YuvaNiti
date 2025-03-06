@@ -1,5 +1,4 @@
-import React from 'react'
-import Navbar from './Navbar'
+
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
 const About = () => {
@@ -56,6 +55,7 @@ const About = () => {
       <div className="bg-gray-200 py-4 text-center border-t border-gray-300">
         <p className="text-gray-600 text-sm">© 2025 All rights reserved.</p>
       </div>
+      <p>....</p>
     </div>
   )
 }
