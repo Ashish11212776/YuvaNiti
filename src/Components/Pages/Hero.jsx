@@ -1,9 +1,8 @@
-import React from 'react'
-// import video from '../../../assets/bac3.mp4'
+
 import img from "../../../assets/background.jpg"
 const Hero = () => {
   return (
-    <div className="relative z-0 h-screen bg-cover bg-center h-[35vh] border-2">
+    <div className="relative z-0 h-min-screen bg-cover bg-center h-[35vh] border-2">
 
 <img 
 src={img}
