@@ -1,10 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 import axios from "axios";
 
 
 export const getAllData = createAsyncThunk("category/getAllData", async (_, { rejectWithValue }) => {
   try {
-    const res = await axios.get("https://xtmpxko7pt.ap.loclx.io/api/v1/category-custom/get-all-categories");
+    const res = await axios.get(`${BASE_URL}/api/v1/category-custom/get-all-categories`);
     
     return res.data?.data?.categories || [];
   } catch (error) {

@@ -71,7 +71,7 @@ const StatusReject = () => {
             Oops! Something went wrong
           </h1>
           <p className="text-gray-600 mb-6">
-            We're experiencing some technical difficulties. Don't worry, it's
+           {" We're experiencing some technical difficulties. Don't worry, it's"}
             not your fault!
           </p>
 

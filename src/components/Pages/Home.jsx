@@ -11,11 +11,12 @@ const Home = () => {
   const { data, error, loading } = useSelector((state) => state.app);
 
   useEffect(() => {
+    if(!data ||data.length===0)
     dispatch(getAllData());
-  }, [dispatch]);
+  }, [dispatch,data]);
 
-  if (error) {
-    return <div className="text-red-600 text-center text-xl">Something Went Wrong!!</div>;
+  if (error || !data) {
+    return <StatusReject />;
   }
 
   if (loading) {
@@ -25,11 +26,7 @@ const Home = () => {
       </div>
     );
   }
-
-  if (!data) {
-    return <StatusReject />;
-  }
-
+ 
   return (
     <>
     

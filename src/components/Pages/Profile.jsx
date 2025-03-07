@@ -9,6 +9,9 @@ import { getProfile } from "../../features/authThunk";
 
 const Profile = () => {
   const profileData = useSelector((state) => state?.auth?.userData);
+ 
+  
+  
 
   const { id } = useSelector(
     (state) => state?.auth?.profile?.data?.userDetails

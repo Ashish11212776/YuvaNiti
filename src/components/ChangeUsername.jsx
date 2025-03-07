@@ -1,10 +1,8 @@
 import {useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeUserName } from '../features/accountThunk';
-import { useNavigate } from 'react-router-dom';
 import { getProfile } from '../features/authThunk';
 import { ToastContainer, toast } from 'react-toastify';
-
 import { CiUser } from "react-icons/ci";
 import { LuUserRoundPen } from "react-icons/lu";
 
@@ -12,12 +10,17 @@ import { LuUserRoundPen } from "react-icons/lu";
 
 const ChangeUsername = () => {
   const  userId  = useSelector((state) => state?.auth?.profile?.data?.userDetails?.id);
-  console.log(userId);
+
+  
   
   const username = useSelector((state) => state?.auth?.userData?.username);
+  console.log(username,"user");
+  
+  const state = useSelector((state)=>state)
+  console.log(state,"user2");
+  
  
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [userName, setUserName] = useState(username);
   const [change, setChange] = useState(false);
 

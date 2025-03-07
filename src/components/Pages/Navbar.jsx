@@ -42,10 +42,19 @@ const Data = () => {
     dispatch(logout());
     setIsSidebarOpen(false);
     setIsMobileMenuOpen(false);
-    toast.success("Logout successful");
+    toast.success("Logout successful", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
     navigate("/");
   }
-  
+
   return (
     <>
       <div className="relative bg-gray-200">
@@ -58,15 +67,15 @@ const Data = () => {
         >
           <h2 className="text-2xl font-semibold mb-4">Profile Info</h2>
           <div className="sidebar-options flex flex-col items-start space-y-4">
-            <a href="/profile" onClick={toggleSidebar}>
+            <NavLink to="/profile" onClick={toggleSidebar}>
               Profile
-            </a>
-            <a href="/dashboard" onClick={toggleSidebar}>
+            </NavLink>
+            <NavLink to="/dashboard" onClick={toggleSidebar}>
               User Dashboard
-            </a>
-            <a href="/account" onClick={toggleSidebar}>
+            </NavLink>
+            <NavLink to="/account" onClick={toggleSidebar}>
               Account Settings
-            </a>
+            </NavLink>
             <button onClick={handleLogout}>Logout</button>
           </div>
         </div>
@@ -74,7 +83,10 @@ const Data = () => {
         {/* Navbar */}
         <div className="flex justify-between items-center p-4 bg-gray-800 shadow-md">
           {/* Logo */}
-          <div className="flex items-center cursor-pointer" onClick={() => navigate("/")}>
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => navigate("/")}
+          >
             <h2 className="text-white text-4xl p-2 border-2 rounded-full text-left font-bold uppercase tracking-wide shadow-lg">
               YN
             </h2>
@@ -82,19 +94,32 @@ const Data = () => {
           </div>
 
           {/* Desktop Navigation (Shifts left when sidebar opens) */}
-          <div className={`hidden md:flex space-x-8 transition-all duration-300 ${isSidebarOpen ? "md:mr-64" : ""}`}>
+          <div
+            className={`hidden md:flex space-x-8 transition-all duration-300 ${
+              isSidebarOpen ? "md:mr-64" : ""
+            }`}
+          >
             <NavLink to="/" className="text-white text-lg hover:text-blue-500">
               Home
             </NavLink>
-            <NavLink to="/about" className="text-white text-lg hover:text-blue-500">
+            <NavLink
+              to="/about"
+              className="text-white text-lg hover:text-blue-500"
+            >
               About
             </NavLink>
             {!token ? (
               <>
-                <NavLink to="/signup" className="text-white text-lg hover:text-blue-500">
+                <NavLink
+                  to="/signup"
+                  className="text-white text-lg hover:text-blue-500"
+                >
                   Sign up
                 </NavLink>
-                <NavLink to="/login" className="text-white text-lg hover:text-blue-500">
+                <NavLink
+                  to="/login"
+                  className="text-white text-lg hover:text-blue-500"
+                >
                   Log in
                 </NavLink>
               </>
@@ -118,7 +143,10 @@ const Data = () => {
                 className="w-12 h-12 rounded-full border-2 border-white cursor-pointer hover:opacity-80 transition duration-300"
               />
             ) : (
-              <AiOutlineMenu className="text-white text-3xl cursor-pointer" onClick={toggleMobileMenu} />
+              <AiOutlineMenu
+                className="text-white text-3xl cursor-pointer"
+                onClick={toggleMobileMenu}
+              />
             )}
           </div>
         </div>
@@ -126,7 +154,10 @@ const Data = () => {
         {/* Mobile Dropdown Menu */}
         {isMobileMenuOpen && (
           <div className="z-10 absolute top-16 right-4 bg-gray-900 text-white rounded-md p-4 shadow-lg w-48 md:hidden">
-            <AiOutlineClose className="text-white text-2xl cursor-pointer absolute top-2 right-2" onClick={toggleMobileMenu} />
+            <AiOutlineClose
+              className="text-white text-2xl cursor-pointer absolute top-2 right-2"
+              onClick={toggleMobileMenu}
+            />
             <div className="flex flex-col space-y-4">
               <NavLink to="/" onClick={toggleMobileMenu}>
                 Home
@@ -167,4 +198,4 @@ const Data = () => {
   );
 };
 
-export default Data
+export default Data;
