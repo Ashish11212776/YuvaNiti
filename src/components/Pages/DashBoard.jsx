@@ -10,7 +10,7 @@ const DashBoard = () => {
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.auth.profile.data.userDetails);
   const FilledForms = useSelector((state) => state?.account?.FilledForms?.data);
-  console.log(FilledForms);
+ 
 
   const SavedForms = useSelector((state) => state?.account?.SavedForms?.data);
 

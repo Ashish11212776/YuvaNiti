@@ -51,7 +51,6 @@ export const updateUserDetails = createAsyncThunk(
   "account/updateUserDetails",
   async ({ data, userId }, { rejectWithValue }) => {
     try {
-      console.log("Data being sent:", data);
 
       const token = sessionStorage.getItem("authToken");
 
@@ -96,7 +95,6 @@ export const recommendedForm = createAsyncThunk(
   async ({ userId }, { rejectWithValue }) => {
     try {
       const token = sessionStorage.getItem("authToken");
-      console.log("Token:", token);
 
       const response = await axios.get(
         `${BASE_URL}/api/v1/customer/forms/show-recommended-forms?customer_id=${userId}`,

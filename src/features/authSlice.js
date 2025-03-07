@@ -82,11 +82,11 @@ const authSlice = createSlice({
         state.status = "pending";
         state.error = null;
       })
-      .addCase(getProfile.fulfilled, (state, action) => {
+      .addCase(getProfile.fulfilled, (state) => {
         state.loading = false;
         state.isAuthenticated = true;
         state.status = "fulfilled";
-        state.profile = action.payload;
+        
       })
       .addCase(getProfile.rejected, (state, action) => {
         state.loading = false;

@@ -98,8 +98,6 @@ export const getProfile = createAsyncThunk(
       );
       const { data } = response.data;
       localStorage.setItem("userData", JSON.stringify(data));
-      
-
       return data;
     } catch (error) {
       return rejectWithValue(
