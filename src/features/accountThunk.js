@@ -29,7 +29,6 @@ export const changePassword = createAsyncThunk(
   async ({ password, confirmPassword, userId }, { rejectWithValue }) => {
     try {
       const token = sessionStorage.getItem("authToken");
-
       const response = await axios.post(
         `${BASE_URL}/api/v1/customer/create-or-update-password?customerId=${userId}`,
         { password: password, confirmPassword: confirmPassword },

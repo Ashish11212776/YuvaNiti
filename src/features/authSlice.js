@@ -23,7 +23,6 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       /*{Send Otp}*/
-
       .addCase(sendOTP.pending, (state) => {
         state.loading = true;
         state.status = "pending";
