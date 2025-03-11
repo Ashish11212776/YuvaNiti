@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import     categoryReducers  from "./dataSlice";
+import     {categoryReducer,advertismentDataReducer}  from "./dataSlice";
 import authReducers from "./authSlice"
 import accountReducers from "./accountSlice"
 const store = configureStore({
@@ -7,7 +7,8 @@ const store = configureStore({
 
         auth:authReducers,
         account:accountReducers,
-        app:categoryReducers
+        app:categoryReducer,
+        advertismentData:advertismentDataReducer
     }
 })
 export default store

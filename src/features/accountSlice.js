@@ -12,7 +12,7 @@ const accountSlice = createSlice({
     status: "pending"
   },
   reducers: {
-    logout: (state) => {
+     logout: (state) => {
       localStorage.removeItem("authToken");
       state.isAuthenticated = false;
     },
