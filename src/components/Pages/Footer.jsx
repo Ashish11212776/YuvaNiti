@@ -5,7 +5,6 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
 const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white p-8 mt-auto">

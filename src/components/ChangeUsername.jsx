@@ -1,4 +1,4 @@
-import {useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeUserName } from '../features/accountThunk';
 import { useNavigate } from 'react-router-dom';
@@ -11,11 +11,11 @@ import { LuUserRoundPen } from "react-icons/lu";
 
 
 const ChangeUsername = () => {
-  const  userId  = useSelector((state) => state?.auth?.profile?.data?.userDetails?.id);
+  const userId = useSelector((state) => state?.auth?.profile?.data?.userDetails?.id);
   console.log(userId);
-  
+
   const username = useSelector((state) => state?.auth?.userData?.username);
- 
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [userName, setUserName] = useState(username);
@@ -25,9 +25,9 @@ const ChangeUsername = () => {
     dispatch(changeUserName({ userName, userId })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         console.log("hello");
-        
+
         dispatch(getProfile({ userId }));
-        
+
         toast.success("User Name Changed", {
           toastId: "username-change-success",
           autoClose: 3000,
@@ -38,18 +38,16 @@ const ChangeUsername = () => {
     }).catch(() => {
       toast.error("Failed to change username.");
     });
- 
   };
-    return (
-      
+  return (
+
     <div className="p-6 max-w-lg mx-auto flex flex-col item-start text-slate-500 font-roboto">
-      <h2 className="text-2xl font-bold mb-6 text-blue-600 flex items-start gap-3 justify-start"><CiUser className=' h-8'/>Account Settings</h2>
-      
+      <h2 className="text-2xl font-bold mb-6 text-blue-600 flex items-start gap-3 justify-start"><CiUser className=' h-8' />Account Settings</h2>
       {!change ? (
         <div>
           <div className="mb-6">
             <label className="text-sm font-semibold mb-2 flex">
-              Username *  
+              Username *
             </label>
             <input
               type="text"
@@ -63,7 +61,7 @@ const ChangeUsername = () => {
               onClick={() => setChange(!change)}
               className="mt-4 w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex gap-3 justify-center items-center duration-300"
             >
-             <LuUserRoundPen/> Change UserName
+              <LuUserRoundPen /> Change UserName
             </button>
           </div>
         </div>
@@ -82,7 +80,7 @@ const ChangeUsername = () => {
               onClick={() => setChange(!change)}
               className="px-4 py-2 bg-gray-300 text-gray-600 rounded-lg hover:bg-gray-400 transition duration-300"
             >
-            Cancel
+              Cancel
             </button>
             <button
               onClick={changeUserNameHandler}
@@ -93,14 +91,13 @@ const ChangeUsername = () => {
           </div>
         </div>
       )}
-        <div className="bg-gray-50 px-6 py-4 border-t border-gray-100">
-            <p className="text-xs text-gray-500 text-center space-x-4">
-              UserName must be unique and different from previous
-            </p>
-          </div>
+      <div className="bg-gray-50 px-6 py-4 border-t border-gray-100">
+        <p className="text-xs text-gray-500 text-center space-x-4">
+          UserName must be unique and different from previous
+        </p>
+      </div>
       <ToastContainer />
     </div>
   );
 };
-
 export default ChangeUsername;
