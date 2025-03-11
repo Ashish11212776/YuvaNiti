@@ -45,6 +45,7 @@ export const subCategories = createAsyncThunk(
           },
         }
         );
+        localStorage.setItem("subcategories",JSON.stringify(adsRes.data))
 
         return  adsRes.data;
         

@@ -1,4 +1,4 @@
-import {useState } from "react";
+import {useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import loo from "../../../assets/loo.gif";
 import govimg from "../../../assets/govimg.png"
@@ -12,6 +12,7 @@ const AdvertismentBoard = () => {
   const [selectedAd, setSelectedAd] = useState(null); // Track selected advertisement
 
  
+
 
   return (
     <>

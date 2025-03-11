@@ -28,11 +28,11 @@ export const category = createSlice({
   },
 });
 
-//advertismentv slice
+
 export const advertismentData=createSlice({
   name:"advertismentData",
   initialState:{
-    advertismentData:{},
+    advertismentData:JSON.parse(localStorage.getItem("subcategories"))||{},
     loading:false,
     status:"pending",
     error:null
