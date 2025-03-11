@@ -49,6 +49,8 @@ const authSlice = createSlice({
         state.loading = false;
         state.status = "fulfilled";
         state.profile = action.payload;
+        state.userData=action?.payload?.data?.userDetails
+        
         state.isAuthenticated = true;
       })
       .addCase(verifyOTP.rejected, (state, action) => {
@@ -68,6 +70,7 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
         state.status = "fulfilled";
         state.profile = action.payload;
+        state.userData=action?.payload?.data?.userDetails
       })
       .addCase(loginWithPassword.rejected, (state, action) => {
         state.loading = false;
@@ -81,11 +84,13 @@ const authSlice = createSlice({
         state.status = "pending";
         state.error = null;
       })
-      .addCase(getProfile.fulfilled, (state, action) => {
+      .addCase(getProfile.fulfilled, (state,action) => {
         state.loading = false;
         state.isAuthenticated = true;
+        state.userData=action.payload
+        
         state.status = "fulfilled";
-      
+        
       })
       .addCase(getProfile.rejected, (state, action) => {
         state.loading = false;

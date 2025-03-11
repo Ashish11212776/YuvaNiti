@@ -9,6 +9,7 @@ import AccountSettings from "./components/AccountSettings";
 import PrivateRoutes from "./components/PrivateRoutes";
 import PageNotFound from "./components/Pages/PageNotFound";
 import DashBoard from "./components/Pages/DashBoard";
+import AdvertismentBoard from "./components/Pages/AdvertismentBoard";
 import Hero from "./components/Pages/Hero";
 function App() {
   return ( 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/account" element={<AccountSettings />} />
           <Route path="/dashboard" element={<DashBoard/>}/>
+             <Route path="/user-dashboard" element={<AdvertismentBoard/>}/>
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

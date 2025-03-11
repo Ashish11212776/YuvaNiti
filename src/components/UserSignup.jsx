@@ -190,7 +190,7 @@ const UserSignUp = () => {
           </div>
           <ToastContainer />
         </div>
-        <style jsx>{`
+        <style>{`
         .bg-pattern {
             position: absolute;
             top: 0;

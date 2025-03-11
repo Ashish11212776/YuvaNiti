@@ -4,13 +4,10 @@ import ChangePassword from './ChangePassword';
 import { useSelector } from 'react-redux';
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
-import { useNavigate } from 'react-router-dom';
 import { FaMobile } from "react-icons/fa6"
 import { FaUser } from "react-icons/fa";
-import { CiUser } from "react-icons/ci";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 const AccountSettings = () => {
-  const navigate = useNavigate()
   const fullName = useSelector((state) => state.auth?.userData?.fullName);
   const mobileNumber = useSelector((state) => state.auth?.userData?.mobileNumber)
   const gender = useSelector((state) => state.auth?.userData?.gender)
